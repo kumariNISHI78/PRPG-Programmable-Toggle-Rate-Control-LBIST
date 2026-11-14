@@ -1,0 +1,47 @@
+# ==============================================================================
+# .gitignore for Member 2 - LBIST PRPG & Toggle-Rate Control (Vivado / VHDL)
+# ==============================================================================
+
+# Vivado synthesis, implementation, and simulation runtime directories
+.Xil/
+xsim.dir/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.runs/
+
+# Vivado logs, journals, and protocol buffers
+*.jou
+*.log
+*.pb
+*.wdb
+*.str
+*.tmp
+*.dmp
+*.bak
+
+# Vivado backup journals and logs
+vivado_*.backup.jou
+vivado_*.backup.log
+
+# Temporary build metadata
+clockInfo.txt
+dfx_runtime.txt
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Whitelist: preserve verified simulation results and waveform captures
+!Simulation_Results/
+!Simulation_Results/*
+!Waveforms/
+!Waveforms/*
+

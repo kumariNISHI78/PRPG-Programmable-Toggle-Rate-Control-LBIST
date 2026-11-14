@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" style="background:#ffffff; font-family:Helvetica, Arial, sans-serif;">
+<text x="400.0" y="32" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">Target vs. Measured Toggle Rates (Word vs. Scan Chain)</text>
+<line x1="80" y1="390.0" x2="760" y2="390.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="394.0" font-size="12" text-anchor="end" fill="#64748b">0%</text>
+<line x1="80" y1="335.0" x2="760" y2="335.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="339.0" font-size="12" text-anchor="end" fill="#64748b">10%</text>
+<line x1="80" y1="280.0" x2="760" y2="280.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="284.0" font-size="12" text-anchor="end" fill="#64748b">20%</text>
+<line x1="80" y1="225.0" x2="760" y2="225.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="229.0" font-size="12" text-anchor="end" fill="#64748b">30%</text>
+<line x1="80" y1="170.0" x2="760" y2="170.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="174.0" font-size="12" text-anchor="end" fill="#64748b">40%</text>
+<line x1="80" y1="115.0" x2="760" y2="115.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="119.0" font-size="12" text-anchor="end" fill="#64748b">50%</text>
+<line x1="80" y1="60.0" x2="760" y2="60.0" stroke="#e2e8f0" stroke-width="1"/>
+<text x="68" y="64.0" font-size="12" text-anchor="end" fill="#64748b">60%</text>
+<line x1="80" y1="390" x2="760" y2="390" stroke="#475569" stroke-width="2"/>
+<line x1="80" y1="60" x2="80" y2="390" stroke="#475569" stroke-width="2"/>
+<rect x="98.57142857142856" y="335.0" width="26" height="55.0" fill="#2563eb" rx="3"/>
+<text x="111.57142857142856" y="329.0" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">10.0%</text>
+<rect x="132.57142857142856" y="349.41" width="26" height="40.589999999999996" fill="#059669" rx="3"/>
+<text x="145.57142857142856" y="343.41" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">7.4%</text>
+<text x="128.57142857142856" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">10%</text>
+<text x="128.57142857142856" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="195.71428571428572" y="280.11" width="26" height="109.89" fill="#2563eb" rx="3"/>
+<text x="208.71428571428572" y="274.11" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">20.0%</text>
+<rect x="229.71428571428572" y="337.75" width="26" height="52.25" fill="#059669" rx="3"/>
+<text x="242.71428571428572" y="331.75" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">9.5%</text>
+<text x="225.71428571428572" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">20%</text>
+<text x="225.71428571428572" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="292.85714285714283" y="227.09" width="26" height="162.91" fill="#2563eb" rx="3"/>
+<text x="305.85714285714283" y="221.09" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">29.6%</text>
+<rect x="326.85714285714283" y="313.22" width="26" height="76.78" fill="#059669" rx="3"/>
+<text x="339.85714285714283" y="307.22" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">14.0%</text>
+<text x="322.85714285714283" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">30%</text>
+<text x="322.85714285714283" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="390.0" y="177.15" width="26" height="212.85" fill="#2563eb" rx="3"/>
+<text x="403.0" y="171.15" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">38.7%</text>
+<rect x="424.0" y="287.37" width="26" height="102.63" fill="#059669" rx="3"/>
+<text x="437.0" y="281.37" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">18.7%</text>
+<text x="420.0" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">40%</text>
+<text x="420.0" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="487.1428571428571" y="136.06499999999997" width="26" height="253.93500000000003" fill="#2563eb" rx="3"/>
+<text x="500.1428571428571" y="130.06499999999997" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">46.2%</text>
+<rect x="521.1428571428571" y="252.115" width="26" height="137.885" fill="#059669" rx="3"/>
+<text x="534.1428571428571" y="246.115" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">25.1%</text>
+<text x="517.1428571428571" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">50%</text>
+<text x="517.1428571428571" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="584.2857142857142" y="121.875" width="26" height="268.125" fill="#2563eb" rx="3"/>
+<text x="597.2857142857142" y="115.875" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">48.8%</text>
+<rect x="618.2857142857142" y="234.68" width="26" height="155.32" fill="#059669" rx="3"/>
+<text x="631.2857142857142" y="228.68" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">28.2%</text>
+<text x="614.2857142857142" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">60%</text>
+<text x="614.2857142857142" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="681.4285714285714" y="102.45999999999998" width="26" height="287.54" fill="#2563eb" rx="3"/>
+<text x="694.4285714285714" y="96.45999999999998" font-size="11" font-weight="600" text-anchor="middle" fill="#1d4ed8">52.3%</text>
+<rect x="715.4285714285714" y="112.69" width="26" height="277.31" fill="#059669" rx="3"/>
+<text x="728.4285714285714" y="106.69" font-size="11" font-weight="600" text-anchor="middle" fill="#047857">50.4%</text>
+<text x="711.4285714285714" y="414" font-size="13" font-weight="bold" text-anchor="middle" fill="#334155">Bypass</text>
+<text x="711.4285714285714" y="430" font-size="11" text-anchor="middle" fill="#64748b">Target</text>
+<rect x="510" y="45" width="16" height="16" fill="#2563eb" rx="2"/>
+<text x="534" y="58" font-size="12" fill="#334155">Modified Word Toggle Rate</text>
+<rect x="510" y="68" width="16" height="16" fill="#059669" rx="2"/>
+<text x="534" y="81" font-size="12" fill="#334155">Scan-Chain Shift Toggle Rate</text>
+</svg>

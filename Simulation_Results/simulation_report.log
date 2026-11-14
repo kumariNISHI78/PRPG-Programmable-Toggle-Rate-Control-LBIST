@@ -1,0 +1,134 @@
+================================================================================
+  VL405 LBIST PRPG & PROGRAMMABLE TOGGLE-RATE CONTROL SIMULATION
+  Hardware-Accurate Bit-True Verification & Power Analysis
+================================================================================
+--------------------------------------------------------------------------------
+RUNNING TEST 1 & 4: Baseline Bypass PRPG (100% LFSR)
+Target Selection Code: '110' | Target Rate: 100.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0xACE1 | Mod=0xACE1 | BaseHD= 8 | ModTog= 8 | Limit=16 | ModActive=0 | ScanCellTog= 1/32
+  [Cycle   2] Raw=0xE270 | Mod=0xE270 | BaseHD= 7 | ModTog= 7 | Limit=16 | ModActive=0 | ScanCellTog= 2/32
+  [Cycle   3] Raw=0x7138 | Mod=0x7138 | BaseHD= 6 | ModTog= 6 | Limit=16 | ModActive=0 | ScanCellTog= 2/32
+  [Cycle   4] Raw=0x389C | Mod=0x389C | BaseHD= 6 | ModTog= 6 | Limit=16 | ModActive=0 | ScanCellTog= 2/32
+  [Cycle   5] Raw=0x1C4E | Mod=0x1C4E | BaseHD= 6 | ModTog= 6 | Limit=16 | ModActive=0 | ScanCellTog= 2/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  52.28 %
+    Modified Word Toggle Rate     :  52.28 %
+    Word Switching Activity Red.  :   0.00 %
+    Conventional Scan-Shift Rate  :  50.42 %
+    Modified Scan-Shift Rate      :  50.42 %
+    Scan-Shift Power Reduction    :   0.00 %
+--------------------------------------------------------------------------------
+RUNNING TEST 2: Target Toggle Rate = 10%
+Target Selection Code: '000' | Target Rate: 10.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0x9B63 | Mod=0x1EC7 | BaseHD= 7 | ModTog= 1 | Limit= 1 | ModActive=1 | ScanCellTog=16/32
+  [Cycle   2] Raw=0xF9B1 | Mod=0x9EC5 | BaseHD= 7 | ModTog= 2 | Limit= 2 | ModActive=1 | ScanCellTog=15/32
+  [Cycle   3] Raw=0xC8D8 | Mod=0x9EC1 | BaseHD= 7 | ModTog= 1 | Limit= 1 | ModActive=1 | ScanCellTog=15/32
+  [Cycle   4] Raw=0x646C | Mod=0x9E61 | BaseHD= 8 | ModTog= 2 | Limit= 2 | ModActive=1 | ScanCellTog=15/32
+  [Cycle   5] Raw=0x3236 | Mod=0x9261 | BaseHD= 8 | ModTog= 2 | Limit= 2 | ModActive=1 | ScanCellTog=15/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  49.00 %
+    Modified Word Toggle Rate     :  10.00 %
+    Word Switching Activity Red.  :  79.59 %
+    Conventional Scan-Shift Rate  :  49.19 %
+    Modified Scan-Shift Rate      :   7.38 %
+    Scan-Shift Power Reduction    :  84.99 %
+--------------------------------------------------------------------------------
+RUNNING TEST 3A: Target Toggle Rate = 20%
+Target Selection Code: '001' | Target Rate: 20.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0x7C8C | Mod=0x3C10 | BaseHD= 6 | ModTog= 3 | Limit= 3 | ModActive=1 | ScanCellTog= 2/32
+  [Cycle   2] Raw=0x3E46 | Mod=0x3C06 | BaseHD= 6 | ModTog= 3 | Limit= 3 | ModActive=1 | ScanCellTog= 1/32
+  [Cycle   3] Raw=0x1F23 | Mod=0x3C23 | BaseHD= 6 | ModTog= 3 | Limit= 3 | ModActive=1 | ScanCellTog= 1/32
+  [Cycle   4] Raw=0xBB91 | Mod=0x3C11 | BaseHD= 7 | ModTog= 3 | Limit= 3 | ModActive=1 | ScanCellTog= 1/32
+  [Cycle   5] Raw=0xE9C8 | Mod=0x3DC1 | BaseHD= 7 | ModTog= 4 | Limit= 4 | ModActive=1 | ScanCellTog= 1/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  50.45 %
+    Modified Word Toggle Rate     :  19.98 %
+    Word Switching Activity Red.  :  60.41 %
+    Conventional Scan-Shift Rate  :  50.10 %
+    Modified Scan-Shift Rate      :   9.50 %
+    Scan-Shift Power Reduction    :  81.04 %
+--------------------------------------------------------------------------------
+RUNNING TEST 3B: Target Toggle Rate = 30%
+Target Selection Code: '010' | Target Rate: 30.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0x4C52 | Mod=0x7455 | BaseHD=10 | ModTog= 4 | Limit= 4 | ModActive=1 | ScanCellTog= 3/32
+  [Cycle   2] Raw=0x2629 | Mod=0x2659 | BaseHD=10 | ModTog= 5 | Limit= 5 | ModActive=1 | ScanCellTog= 2/32
+  [Cycle   3] Raw=0xA714 | Mod=0xA614 | BaseHD= 7 | ModTog= 5 | Limit= 5 | ModActive=1 | ScanCellTog= 2/32
+  [Cycle   4] Raw=0x538A | Mod=0x4612 | BaseHD=10 | ModTog= 5 | Limit= 5 | ModActive=1 | ScanCellTog= 2/32
+  [Cycle   5] Raw=0x29C5 | Mod=0x4645 | BaseHD=10 | ModTog= 5 | Limit= 5 | ModActive=1 | ScanCellTog= 2/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  49.23 %
+    Modified Word Toggle Rate     :  29.62 %
+    Word Switching Activity Red.  :  39.82 %
+    Conventional Scan-Shift Rate  :  49.73 %
+    Modified Scan-Shift Rate      :  13.96 %
+    Scan-Shift Power Reduction    :  71.93 %
+--------------------------------------------------------------------------------
+RUNNING TEST 3C: Target Toggle Rate = 40%
+Target Selection Code: '011' | Target Rate: 40.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0x4B06 | Mod=0x8706 | BaseHD= 8 | ModTog= 6 | Limit= 6 | ModActive=1 | ScanCellTog= 7/32
+  [Cycle   2] Raw=0x2583 | Mod=0x2583 | BaseHD= 8 | ModTog= 6 | Limit= 6 | ModActive=0 | ScanCellTog= 6/32
+  [Cycle   3] Raw=0xA6C1 | Mod=0xA6C1 | BaseHD= 5 | ModTog= 5 | Limit= 7 | ModActive=0 | ScanCellTog= 7/32
+  [Cycle   4] Raw=0xE760 | Mod=0xE760 | BaseHD= 5 | ModTog= 5 | Limit= 6 | ModActive=0 | ScanCellTog= 7/32
+  [Cycle   5] Raw=0x73B0 | Mod=0x73B0 | BaseHD= 6 | ModTog= 6 | Limit= 7 | ModActive=0 | ScanCellTog= 8/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  50.92 %
+    Modified Word Toggle Rate     :  38.70 %
+    Word Switching Activity Red.  :  24.01 %
+    Conventional Scan-Shift Rate  :  50.82 %
+    Modified Scan-Shift Rate      :  18.66 %
+    Scan-Shift Power Reduction    :  63.28 %
+--------------------------------------------------------------------------------
+RUNNING TEST 3D: Target Toggle Rate = 50%
+Target Selection Code: '100' | Target Rate: 50.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0x3DBF | Mod=0x3DBF | BaseHD= 6 | ModTog= 6 | Limit= 8 | ModActive=0 | ScanCellTog= 6/32
+  [Cycle   2] Raw=0xAADF | Mod=0xAADF | BaseHD= 7 | ModTog= 7 | Limit= 8 | ModActive=0 | ScanCellTog= 6/32
+  [Cycle   3] Raw=0xE16F | Mod=0xE16F | BaseHD= 7 | ModTog= 7 | Limit= 8 | ModActive=0 | ScanCellTog= 6/32
+  [Cycle   4] Raw=0xC4B7 | Mod=0xC4B7 | BaseHD= 7 | ModTog= 7 | Limit= 8 | ModActive=0 | ScanCellTog= 6/32
+  [Cycle   5] Raw=0xD65B | Mod=0xD65B | BaseHD= 7 | ModTog= 7 | Limit= 8 | ModActive=0 | ScanCellTog= 6/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  52.65 %
+    Modified Word Toggle Rate     :  46.17 %
+    Word Switching Activity Red.  :  12.30 %
+    Conventional Scan-Shift Rate  :  52.86 %
+    Modified Scan-Shift Rate      :  25.07 %
+    Scan-Shift Power Reduction    :  52.57 %
+--------------------------------------------------------------------------------
+RUNNING TEST 3E: Target Toggle Rate = 60%
+Target Selection Code: '101' | Target Rate: 60.0% | Cycles: 500
+--------------------------------------------------------------------------------
+  [Cycle   1] Raw=0x4C25 | Mod=0x4C65 | BaseHD=10 | ModTog= 9 | Limit= 9 | ModActive=1 | ScanCellTog= 6/32
+  [Cycle   2] Raw=0x9212 | Mod=0x9412 | BaseHD=11 | ModTog=10 | Limit=10 | ModActive=1 | ScanCellTog= 6/32
+  [Cycle   3] Raw=0x4909 | Mod=0x5909 | BaseHD=10 | ModTog= 9 | Limit= 9 | ModActive=1 | ScanCellTog= 6/32
+  [Cycle   4] Raw=0x9084 | Mod=0x9084 | BaseHD= 9 | ModTog= 8 | Limit=10 | ModActive=0 | ScanCellTog= 6/32
+  [Cycle   5] Raw=0x4842 | Mod=0x4842 | BaseHD= 8 | ModTog= 8 | Limit=10 | ModActive=0 | ScanCellTog= 6/32
+>>> EVALUATION RESULTS:
+    Conventional Word Toggle Rate :  50.25 %
+    Modified Word Toggle Rate     :  48.75 %
+    Word Switching Activity Red.  :   2.99 %
+    Conventional Scan-Shift Rate  :  51.84 %
+    Modified Scan-Shift Rate      :  28.24 %
+    Scan-Shift Power Reduction    :  45.52 %
+--------------------------------------------------------------------------------
+TEST 5: Asynchronous Reset and Restart Verification
+--------------------------------------------------------------------------------
+  Asynchronous reset asserted: LFSR reseeded to 0xACE1, accumulators cleared.
+  Restart verified: Successful pattern generation resumed immediately.
+--------------------------------------------------------------------------------
+TEST 6: Continuous Long-Sequence Operation (5,000 Cycles)
+--------------------------------------------------------------------------------
+  5,000 Continuous cycles executed successfully.
+  All-Zero States Encountered : 0 (Anti-lockup circuit 100% effective)
+  Unique Modified Patterns    : 4770 states visited
+--------------------------------------------------------------------------------
+TEST 7: Dynamic On-The-Fly Target Changes (10% -> 30% -> 60% -> Bypass)
+--------------------------------------------------------------------------------
+  Switched to target sel '000': Observed instant toggle count = 2
+  Switched to target sel '010': Observed instant toggle count = 5
+  Switched to target sel '101': Observed instant toggle count = 8
+  Switched to target sel '110': Observed instant toggle count = 7
