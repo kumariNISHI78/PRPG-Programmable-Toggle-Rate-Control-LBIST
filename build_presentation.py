@@ -4,7 +4,7 @@ Design Focus:
 - Bright, high-contrast, modern engineering aesthetic (Pure White & Light Slate background, Deep Navy typography).
 - Optimized for a 5-minute faculty presentation: punchy bullet points, bold visual cues, no walls of text.
 - Names of members appear ONLY on Slide 1.
-- Exact technical metrics: Vivado XSim measured toggle rates, 84.35% power reduction, 82 LUTs (<0.5%) overhead.
+- Exact technical metrics: Vivado XSim measured toggle rates, 84.35% power reduction, 0 clock latency overhead.
 """
 
 import os
@@ -325,7 +325,7 @@ def create_deck():
             ("DDRTS Engine", "Modulo-16 rotating priority token ring preventing scan starvation."),
             ("Rate Controller", "Decodes 10%–60% targets using fractional sigma-delta dither to hit exact limits."),
             ("Hardware Tracking", "32-cell physical scan-chain activity tracking; measured 84.35% power reduction."),
-            ("FPGA Synthesis", "Synthesized on Xilinx Artix-7 (xc7a35t): consumes only 82 LUTs, 57 FFs (>350 MHz).")
+            ("Simulation Verification", "Exhaustively verified in Vivado XSim across 7 test suites, dynamic targets & 5,000 cycles.")
         ]),
         ("MODULE 3: LBIST CONTROLLER & MISR", C_AMBER, [
             ("LBIST Controller", "Autonomous FSM sequencing scan shift, system capture, and evaluation cycles."),
@@ -478,7 +478,7 @@ def create_deck():
     obs_bullets = [
         ("84.35% Scan Power Reduction", "At 10% target, scan transitions drop from 55.37% to 8.67%, slashing shift power by 84.35%."),
         ("Tight Target Tracking", "Fractional sigma-delta dither hits 10.29% toggle rate closely matching the 10.00% target."),
-        ("Minimal Hardware Overhead", "Artix-7 FPGA synthesis consumes only 82 LUTs and 57 FFs (<0.5% MIPS32 core) at >350 MHz."),
+        ("Clean Synchronous RTL", "Fully synchronous single-clock VHDL-2008 architecture with 0 inferred latches, fully ready for FPGA synthesis."),
         ("Zero Latency Penalty", "Continuous test pattern generation every single clock cycle with zero test-time inflation."),
         ("Current Integration Status", "PRPG & Toggle Control 100% verified in Vivado XSim; scan-chain & MISR integration mapped.")
     ]
@@ -570,7 +570,7 @@ def create_deck():
         ("Power Crisis Successfully Mitigated", "Developed programmable toggle-rate controlled PRPG cutting scan shift power by up to 84.35% without stopping pattern generation."),
         ("Starvation-Free DDRTS Architecture", "Modulo-16 rotating priority token ring ensures all scan cells cyclically toggle, avoiding static masking and maintaining pattern diversity."),
         ("Production-Grade RTL Implementation", "Fully synthesizable VHDL-2008 architecture with 0 latches, single-clock synchronous design, and autonomous zero-lockup recovery."),
-        ("Ultra-Low Area Overhead", "Synthesized on Xilinx Artix-7 consuming only 82 LUTs (<0.5% of MIPS32 core) at >350 MHz operating frequency."),
+        ("Deterministic Dynamic Control", "Seamless dynamic target switching verified in simulation with zero drift across 5,000 continuous test cycles."),
         ("Exhaustive Verification Completed", "7 comprehensive test suites executed in Vivado XSim (Bypass, 10%–60% targets, reset recovery, 5,000 continuous cycles) with 100% verified assertions.")
     ]
 
@@ -618,7 +618,7 @@ def create_deck():
         ("Full-System Top-Level Integration", "Wire PRPG modifier to MIPS32 scan chains and central LBIST test controller in a single unified test harness."),
         ("Closed-Loop Fault Simulation", "Perform stuck-at and transition fault grading across the MIPS32 instruction set using automated fault injection and MISR compaction."),
         ("Adaptive Two-Phase LBIST Scheme", "Run Phase 1 at 10%–20% target (detecting >80% easy faults with minimal heat), followed by a brief Bypass burst for hard-to-detect faults."),
-        ("Physical FPGA Hardware Characterization", "Measure post-layout timing slack, placed-and-routed clock-tree power, and dynamic IR-drop on Xilinx Artix-7/Basys3 hardware.")
+        ("FPGA Logic Synthesis & Validation", "Perform out-of-context logic synthesis, place-and-route, and measure post-layout power on Xilinx Artix-7 FPGA.")
     ]
 
     for ftitle, fdesc in future_pts:
