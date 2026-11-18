@@ -560,18 +560,18 @@ def build_presentation():
     left_x = Inches(0.8)
 
     # 1. Measured Toggle-Rate Results Card
-    tbl_y = Inches(1.36)
-    tbl_h = Inches(3.26)
+    tbl_y = Inches(1.34)
+    tbl_h = Inches(2.68)
     tbox = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_x, tbl_y, col_w, tbl_h)
     tbox.fill.solid()
     tbox.fill.fore_color.rgb = C_WHITE
     tbox.line.color.rgb = C_CARD_BORDER
     tbox.line.width = Pt(1.5)
 
-    add_pill_badge(s3, left_x + Inches(0.18), tbl_y + Inches(0.12), Inches(3.0), Inches(0.34), "MEASURED TOGGLE-RATE RESULTS", C_PILL_BLUE)
+    add_pill_badge(s3, left_x + Inches(0.18), tbl_y + Inches(0.10), Inches(2.8), Inches(0.30), "MEASURED TOGGLE-RATE RESULTS", C_PILL_BLUE)
 
     # Results Table (Exact verified numbers)
-    table_shape = s3.shapes.add_table(8, 5, left_x + Inches(0.14), tbl_y + Inches(0.52), col_w - Inches(0.28), Inches(2.20))
+    table_shape = s3.shapes.add_table(8, 5, left_x + Inches(0.14), tbl_y + Inches(0.44), col_w - Inches(0.28), Inches(1.82))
     tbl = table_shape.table
     tbl.columns[0].width = Inches(1.05)
     tbl.columns[1].width = Inches(1.0)
@@ -588,7 +588,7 @@ def build_presentation():
         p.text = h
         p.alignment = PP_ALIGN.CENTER
         p.font.name = FONT_MAIN
-        p.font.size = Pt(8)
+        p.font.size = Pt(7.5)
         p.font.bold = True
         p.font.color.rgb = C_WHITE
 
@@ -611,7 +611,7 @@ def build_presentation():
             p.text = val
             p.alignment = PP_ALIGN.CENTER
             p.font.name = FONT_MAIN
-            p.font.size = Pt(7.5)
+            p.font.size = Pt(7.2)
             if col_idx == 4 and "%" in val:
                 p.font.bold = True
                 p.font.color.rgb = C_PILL_GREEN
@@ -622,26 +622,26 @@ def build_presentation():
                 p.font.color.rgb = C_TEXT_DARK
 
     # Clarification note below table
-    notetb = s3.shapes.add_textbox(left_x + Inches(0.18), tbl_y + Inches(2.78), col_w - Inches(0.36), Inches(0.42))
+    notetb = s3.shapes.add_textbox(left_x + Inches(0.18), tbl_y + Inches(2.30), col_w - Inches(0.36), Inches(0.32))
     notetf = notetb.text_frame
     notetf.word_wrap = True
     notetf.margin_top = notetf.margin_bottom = notetf.margin_left = notetf.margin_right = 0
     notep = notetf.paragraphs[0]
     notep.text = "Power-saving values are reported for total on-chip scan-shift power in the supplied results."
     notep.font.name = FONT_MAIN
-    notep.font.size = Pt(7.5)
+    notep.font.size = Pt(7)
     notep.font.color.rgb = C_TEXT_MUTED
 
     # 2. Vivado Synthesis Summary Card
-    syn_y = Inches(4.74)
-    syn_h = Inches(2.50)
+    syn_y = Inches(4.12)
+    syn_h = Inches(2.36)
     syn_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_x, syn_y, col_w, syn_h)
     syn_box.fill.solid()
     syn_box.fill.fore_color.rgb = C_WHITE
     syn_box.line.color.rgb = C_CARD_BORDER
     syn_box.line.width = Pt(1.5)
 
-    add_pill_badge(s3, left_x + Inches(0.18), syn_y + Inches(0.12), Inches(3.0), Inches(0.34), "VIVADO SYNTHESIS SUMMARY", C_PILL_BLUE)
+    add_pill_badge(s3, left_x + Inches(0.18), syn_y + Inches(0.10), Inches(2.8), Inches(0.30), "VIVADO SYNTHESIS SUMMARY", C_PILL_BLUE)
 
     # 4 Metric Blocks inside Synthesis Card
     vmetrics = [
@@ -651,14 +651,14 @@ def build_presentation():
         ("BRAM / URAM / DSP", "0 / 0 / 0", C_TEXT_DARK)
     ]
     vm_w = Inches(1.24)
-    vm_h = Inches(0.90)
+    vm_h = Inches(0.78)
     vm_gap = Inches(0.12)
     vm_start_x = left_x + Inches(0.16)
-    vm_y = syn_y + Inches(0.54)
+    vm_y = syn_y + Inches(0.46)
 
     for idx, (m_lbl, m_val, m_col) in enumerate(vmetrics):
-        mx = vm_start_x + idx * (vm_w + vm_gap)
-        mb = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, mx, vm_y, vm_w, vm_h)
+        mb = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, mx if 'mx' in locals() else vm_start_x + idx * (vm_w + vm_gap), vm_y, vm_w, vm_h)
+        mb.left = vm_start_x + idx * (vm_w + vm_gap)
         mb.fill.solid()
         mb.fill.fore_color.rgb = RGBColor(248, 250, 252)
         mb.line.color.rgb = C_BORDER_MID
@@ -671,33 +671,33 @@ def build_presentation():
         mp1.text = m_lbl
         mp1.alignment = PP_ALIGN.CENTER
         mp1.font.name = FONT_MAIN
-        mp1.font.size = Pt(7.5)
+        mp1.font.size = Pt(7.2)
         mp1.font.color.rgb = C_TEXT_MUTED
 
         mp2 = mbtf.add_paragraph()
         mp2.text = m_val
         mp2.alignment = PP_ALIGN.CENTER
         mp2.font.name = FONT_MAIN
-        mp2.font.size = Pt(11)
+        mp2.font.size = Pt(10)
         mp2.font.bold = True
         mp2.font.color.rgb = m_col
-        mp2.space_before = Pt(4)
+        mp2.space_before = Pt(3)
 
     # Synthesis Key Notes
-    sntb = s3.shapes.add_textbox(left_x + Inches(0.20), syn_y + Inches(1.54), col_w - Inches(0.40), Inches(0.85))
+    sntb = s3.shapes.add_textbox(left_x + Inches(0.20), syn_y + Inches(1.34), col_w - Inches(0.40), Inches(0.92))
     sntf = sntb.text_frame
     sntf.word_wrap = True
     sntf.margin_top = sntf.margin_bottom = sntf.margin_left = sntf.margin_right = 0
-    snp = sntf.paragraphs[0]
-    snp.text = "• Implementation: Vivado synthesis completed with 5,565 LUTs, 1,287 FFs, and 0 dedicated memory/DSP blocks for the top-level MIPS32 + Scan LBIST core."
-    snp.font.name = FONT_MAIN
-    snp.font.size = Pt(8)
-    snp.font.color.rgb = C_TEXT_DARK
+    snp1 = sntf.paragraphs[0]
+    snp1.text = "• Implementation: Vivado synthesis completed with 5,565 LUTs, 1,287 FFs, and 0 dedicated memory/DSP blocks for the top-level MIPS32 + Scan LBIST core."
+    snp1.font.name = FONT_MAIN
+    snp1.font.size = Pt(7.8)
+    snp1.font.color.rgb = C_TEXT_DARK
 
     snp2 = sntf.add_paragraph()
     snp2.text = "• Verification Status: Behavioral simulation & out-of-context RTL synthesis verified; place-and-route I/O closure scheduled for hardware integration."
     snp2.font.name = FONT_MAIN
-    snp2.font.size = Pt(8)
+    snp2.font.size = Pt(7.8)
     snp2.font.color.rgb = C_TEXT_DARK
     snp2.space_before = Pt(3)
 
@@ -707,17 +707,17 @@ def build_presentation():
     right_x = Inches(6.833)
 
     # 1. Key Project Achievements Card (Top)
-    ach_y = Inches(1.36)
-    ach_h = Inches(3.26)
+    ach_y = Inches(1.34)
+    ach_h = Inches(2.68)
     ach_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, right_x, ach_y, col_w, ach_h)
     ach_box.fill.solid()
     ach_box.fill.fore_color.rgb = C_WHITE
     ach_box.line.color.rgb = RGBColor(167, 243, 208)
     ach_box.line.width = Pt(1.5)
 
-    add_pill_badge(s3, right_x + Inches(0.18), ach_y + Inches(0.12), Inches(3.0), Inches(0.34), "KEY PROJECT ACHIEVEMENTS", C_PILL_GREEN)
+    add_pill_badge(s3, right_x + Inches(0.18), ach_y + Inches(0.10), Inches(2.8), Inches(0.30), "KEY PROJECT ACHIEVEMENTS", C_PILL_GREEN)
 
-    atb = s3.shapes.add_textbox(right_x + Inches(0.22), ach_y + Inches(0.54), col_w - Inches(0.44), ach_h - Inches(0.66))
+    atb = s3.shapes.add_textbox(right_x + Inches(0.22), ach_y + Inches(0.46), col_w - Inches(0.44), ach_h - Inches(0.52))
     atf = atb.text_frame
     atf.word_wrap = True
     atf.margin_top = atf.margin_bottom = atf.margin_left = atf.margin_right = 0
@@ -732,32 +732,32 @@ def build_presentation():
     for i, (ahd, adesc) in enumerate(ach_items):
         p = atf.add_paragraph()
         if i > 0:
-            p.space_before = Pt(6)
+            p.space_before = Pt(4)
         r1 = p.add_run()
         r1.text = "• " + ahd
         r1.font.name = FONT_MAIN
-        r1.font.size = Pt(8.5)
+        r1.font.size = Pt(8.2)
         r1.font.bold = True
         r1.font.color.rgb = C_PILL_GREEN
 
         r2 = p.add_run()
         r2.text = adesc
         r2.font.name = FONT_MAIN
-        r2.font.size = Pt(8.2)
+        r2.font.size = Pt(7.8)
         r2.font.color.rgb = C_TEXT_DARK
 
     # 2. Future Scope & Integration Card (Bottom)
-    fut_y = Inches(4.74)
-    fut_h = Inches(2.50)
+    fut_y = Inches(4.12)
+    fut_h = Inches(2.36)
     fut_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, right_x, fut_y, col_w, fut_h)
     fut_box.fill.solid()
     fut_box.fill.fore_color.rgb = C_WHITE
     fut_box.line.color.rgb = RGBColor(191, 219, 254)
     fut_box.line.width = Pt(1.5)
 
-    add_pill_badge(s3, right_x + Inches(0.18), fut_y + Inches(0.12), Inches(3.0), Inches(0.34), "FUTURE SCOPE & INTEGRATION", C_PILL_BLUE)
+    add_pill_badge(s3, right_x + Inches(0.18), fut_y + Inches(0.10), Inches(2.8), Inches(0.30), "FUTURE SCOPE & INTEGRATION", C_PILL_BLUE)
 
-    ftb = s3.shapes.add_textbox(right_x + Inches(0.22), fut_y + Inches(0.52), col_w - Inches(0.44), fut_h - Inches(0.60))
+    ftb = s3.shapes.add_textbox(right_x + Inches(0.22), fut_y + Inches(0.46), col_w - Inches(0.44), fut_h - Inches(0.52))
     ftf = ftb.text_frame
     ftf.word_wrap = True
     ftf.margin_top = ftf.margin_bottom = ftf.margin_left = ftf.margin_right = 0
@@ -772,19 +772,53 @@ def build_presentation():
     for i, (fhd, fdesc) in enumerate(fut_items):
         p = ftf.add_paragraph()
         if i > 0:
-            p.space_before = Pt(5)
+            p.space_before = Pt(4)
         r1 = p.add_run()
         r1.text = "• " + fhd
         r1.font.name = FONT_MAIN
-        r1.font.size = Pt(8.5)
+        r1.font.size = Pt(8.2)
         r1.font.bold = True
         r1.font.color.rgb = C_PILL_BLUE
 
         r2 = p.add_run()
         r2.text = fdesc
         r2.font.name = FONT_MAIN
-        r2.font.size = Pt(8.2)
+        r2.font.size = Pt(7.8)
         r2.font.color.rgb = C_TEXT_DARK
+
+    # -------------------------------------------------------------------------
+    # BOTTOM FULL-WIDTH BANNER: Thank You! Questions & Discussion Welcome
+    # Matching exact user uploaded image media_1795029210561_94affc69.png
+    # -------------------------------------------------------------------------
+    thx_y = Inches(6.58)
+    thx_h = Inches(0.58)
+    thx_w = Inches(11.733)
+    thx_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), thx_y, thx_w, thx_h)
+    thx_box.fill.solid()
+    thx_box.fill.fore_color.rgb = RGBColor(238, 242, 255) # Light Indigo (#EEF2FF)
+    thx_box.line.color.rgb = C_BLUE
+    thx_box.line.width = Pt(1.5)
+
+    ttb = s3.shapes.add_textbox(Inches(0.9), thx_y + Inches(0.06), thx_w - Inches(0.2), thx_h - Inches(0.12))
+    ttf = ttb.text_frame
+    ttf.word_wrap = True
+    ttf.margin_top = ttf.margin_bottom = ttf.margin_left = ttf.margin_right = 0
+    tp1 = ttf.paragraphs[0]
+    tp1.text = "Thank You! Questions & Discussion Welcome"
+    tp1.alignment = PP_ALIGN.CENTER
+    tp1.font.name = FONT_MAIN
+    tp1.font.size = Pt(11)
+    tp1.font.bold = True
+    tp1.font.color.rgb = C_NAVY_HEADING
+
+    tp2 = ttf.add_paragraph()
+    tp2.text = "VL405 Design for Testability Laboratory Project  •  Department of Electronics & Communication Engineering"
+    tp2.alignment = PP_ALIGN.CENTER
+    tp2.font.name = FONT_MAIN
+    tp2.font.size = Pt(8.5)
+    tp2.font.bold = True
+    tp2.font.color.rgb = C_NAVY_SUB
+    tp2.space_before = Pt(2)
 
     # Save presentation
     output_filename = "VL405_LBIST_Project_Presentation.pptx"
