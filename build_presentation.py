@@ -1,11 +1,13 @@
 """
-Builds a professional, high-contrast, 3-slide PowerPoint presentation for VL405 DFT Laboratory Project.
-Exact Constraints:
-- Exactly 3 slides total.
-- Slide 1: Introduction, Problem Statement, and Group Members.
-- Slide 2: Proposed LBIST Architecture in a compact, attractive Flow Diagram.
-- Slide 3: Results, Vivado Synthesis Results (5565 LUTs, 1287 FFs), Total On-Chip Power Reduction, & Conclusion on a single page.
-- Clean, bright, high-contrast engineering theme. Fully editable native shapes and text.
+Builds an academically styled, professional 3-slide PowerPoint presentation for VL405 DFT Laboratory Project.
+Exact Requirements:
+- 16:9 Widescreen (13.333" x 7.5")
+- Bright, clean, white/light-grey background (Zero dark themes/gradients).
+- Consistent professional palette: Navy Blue headings, Teal/Green solutions, Orange highlights, subtle Red problems.
+- Slide 1: Introduction, Problem Statement, Objectives, and 3 Team Member Cards.
+- Slide 2: Proposed LBIST Architecture as a compact, professional Flow Diagram (Controller -> PRPG -> Modifier -> MIPS32 Scan -> Capture -> MISR -> Signature Analysis) + 4-step Working Principle.
+- Slide 3: Results, Observations and Conclusion (Experimental Table, Vivado Synthesis Table, Chart, Observations, Fault Coverage status, Future Work).
+- 100% Native editable PowerPoint shapes, text boxes, tables, and arrows.
 """
 
 import os
@@ -15,105 +17,107 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
-def build_deck():
+def build_presentation():
     prs = Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
     blank_layout = prs.slide_layouts[6]
 
-    # Professional Bright Color Palette
-    C_BG = RGBColor(248, 250, 252)          # Light Slate background (#F8FAFC)
-    C_CARD_BG = RGBColor(255, 255, 255)     # Pure White card container (#FFFFFF)
-    C_CARD_BORDER = RGBColor(226, 232, 240) # Clean border (#E2E8F0)
-    C_CARD_BORDER_HI = RGBColor(203, 213, 225)
+    # Academic Color Palette Definitions
+    C_BG = RGBColor(250, 250, 252)          # Clean off-white background (#FAFAFC)
+    C_WHITE = RGBColor(255, 255, 255)       # Card background (#FFFFFF)
+    C_CARD_BORDER = RGBColor(226, 232, 240) # Subtle Card Border (#E2E8F0)
+    C_BORDER_MID = RGBColor(203, 213, 225)  # Mid Border (#CBD5E1)
     
-    C_TITLE_NAVY = RGBColor(15, 23, 42)     # Deep Slate/Navy (#0F172A)
-    C_SUBTITLE_BLUE = RGBColor(30, 58, 138) # Royal Blue (#1E3A8A)
-    C_TEXT_DARK = RGBColor(30, 41, 59)      # Dark Charcoal (#1E293B)
-    C_TEXT_MUTED = RGBColor(71, 85, 105)    # Medium Slate (#475569)
-    C_TEXT_LIGHT = RGBColor(148, 163, 184)  # Light Slate (#94A3B8)
+    # Typography Colors
+    C_NAVY_HEADING = RGBColor(15, 37, 68)   # Deep Academic Navy (#0F2544)
+    C_NAVY_SUB = RGBColor(30, 58, 138)      # Royal Navy (#1E3A8A)
+    C_TEXT_DARK = RGBColor(33, 43, 54)      # Readable Charcoal Body (#212B36)
+    C_TEXT_MUTED = RGBColor(99, 115, 129)   # Subtle Supporting Text (#637381)
     
-    # Accent Colors
-    C_BLUE = RGBColor(37, 99, 235)          # Vibrant Royal Blue (#2563EB)
-    C_GREEN = RGBColor(5, 150, 105)         # Vibrant Emerald Green (#059669)
-    C_AMBER = RGBColor(217, 119, 6)         # Deep Amber (#D97706)
-    C_RED = RGBColor(220, 38, 38)           # Alert Crimson (#DC2626)
-    C_TEAL = RGBColor(13, 148, 136)         # Dark Teal (#0D9488)
-    C_PURPLE = RGBColor(124, 58, 237)       # Royal Purple (#7C3AED)
+    # Accent Colors (Consistent across all 3 slides)
+    C_TEAL = RGBColor(13, 148, 136)         # Teal / Green (Proposed Solution / Member 2: #0D9488)
+    C_BLUE = RGBColor(37, 99, 235)          # Vibrant Royal Blue (Core / Member 1: #2563EB)
+    C_ORANGE = RGBColor(217, 119, 6)        # Orange / Amber (Highlights / Member 3: #D97706)
+    C_RED = RGBColor(220, 38, 38)           # Subtle Red (Problem Statement: #DC2626)
+    C_GREEN = RGBColor(5, 150, 105)         # Emerald Green (Power Savings: #059669)
 
-    def set_slide_background(slide):
+    FONT_MAIN = "Calibri"
+
+    def apply_slide_background(slide):
         bg = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, Inches(13.333), Inches(7.5))
         bg.fill.solid()
         bg.fill.fore_color.rgb = C_BG
         bg.line.fill.background()
         return bg
 
-    def add_header(slide, title_text, subtitle_text, slide_num):
-        header_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.38), Inches(11.733), Inches(0.92))
+    def render_header(slide, title_text, subtitle_text, slide_num):
+        # Header text box
+        header_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.36), Inches(11.733), Inches(0.88))
         tf = header_box.text_frame
         tf.word_wrap = True
         tf.margin_left = tf.margin_top = tf.margin_right = tf.margin_bottom = 0
 
         p1 = tf.paragraphs[0]
         p1.text = title_text
-        p1.font.name = "Segoe UI"
+        p1.font.name = FONT_MAIN
         p1.font.size = Pt(21)
         p1.font.bold = True
-        p1.font.color.rgb = C_TITLE_NAVY
+        p1.font.color.rgb = C_NAVY_HEADING
 
         p2 = tf.add_paragraph()
         p2.text = subtitle_text
-        p2.font.name = "Segoe UI"
+        p2.font.name = FONT_MAIN
         p2.font.size = Pt(10.5)
         p2.font.bold = True
-        p2.font.color.rgb = C_SUBTITLE_BLUE
-        p2.space_before = Pt(3)
+        p2.font.color.rgb = C_NAVY_SUB
+        p2.space_before = Pt(2)
 
         # Slide Number Badge
-        num_box = slide.shapes.add_textbox(Inches(11.8), Inches(0.38), Inches(0.8), Inches(0.4))
+        num_box = slide.shapes.add_textbox(Inches(11.733), Inches(0.36), Inches(0.8), Inches(0.35))
         ntf = num_box.text_frame
         ntf.margin_left = ntf.margin_top = ntf.margin_right = ntf.margin_bottom = 0
         np = ntf.paragraphs[0]
         np.text = f"Slide {slide_num} / 3"
         np.alignment = PP_ALIGN.RIGHT
-        np.font.name = "Segoe UI"
+        np.font.name = FONT_MAIN
         np.font.size = Pt(11)
         np.font.bold = True
-        np.font.color.rgb = C_TEXT_LIGHT
+        np.font.color.rgb = C_TEXT_MUTED
 
-        # Crisp divider rule
-        rule = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.34), Inches(11.733), Inches(0.02))
+        # Thin clean horizontal dividing rule
+        rule = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(1.30), Inches(11.733), Inches(0.015))
         rule.fill.solid()
-        rule.fill.fore_color.rgb = C_CARD_BORDER
+        rule.fill.fore_color.rgb = C_BORDER_MID
         rule.line.fill.background()
 
     # =========================================================================
-    # SLIDE 1: INTRODUCTION, PROBLEM STATEMENT & TEAM MEMBERS
+    # SLIDE 1: INTRODUCTION AND PROJECT OVERVIEW
     # =========================================================================
     s1 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s1)
+    apply_slide_background(s1)
 
-    add_header(s1,
-               "Low-Power Scan-Based LBIST Using MIPS32 Architecture",
-               "VL405 – Design for Testability (DFT) Laboratory Project Assignment",
-               1)
+    render_header(s1,
+                  "Low-Power Scan-Based LBIST Using MIPS32 Architecture",
+                  "VL405 – Design for Testability (DFT) Laboratory Project",
+                  1)
 
-    # Team Members Banner Cards (Top section)
+    # 3 Compact Team Member Cards (Top Row)
     members_data = [
         ("Harshitha Modekurty", "B23272", "Member 1: MIPS32 Core & Scan Architecture", C_BLUE),
         ("Nishi Kumari", "B24495", "Member 2: PRPG & Toggle-Rate Control", C_TEAL),
-        ("Gaurav Tiwari", "B24483", "Member 3: LBIST Controller & Fault Analysis", C_AMBER)
+        ("Gaurav Tiwari", "B24483", "Member 3: LBIST Controller & Fault Analysis", C_ORANGE)
     ]
     card_w = Inches(3.75)
-    card_h = Inches(0.92)
-    card_y = Inches(1.50)
+    card_h = Inches(0.88)
+    card_y = Inches(1.45)
 
     for idx, (name, roll, role, acc_color) in enumerate(members_data):
         card_x = Inches(0.8) + idx * (card_w + Inches(0.24))
         
         card = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, card_x, card_y, card_w, card_h)
         card.fill.solid()
-        card.fill.fore_color.rgb = C_CARD_BG
+        card.fill.fore_color.rgb = C_WHITE
         card.line.color.rgb = acc_color
         card.line.width = Pt(1.5)
 
@@ -124,430 +128,376 @@ def build_deck():
 
         p = tf.paragraphs[0]
         p.text = f"{name} ({roll})"
-        p.font.name = "Segoe UI"
+        p.font.name = FONT_MAIN
         p.font.size = Pt(11)
         p.font.bold = True
-        p.font.color.rgb = C_TITLE_NAVY
+        p.font.color.rgb = C_NAVY_HEADING
 
         p2 = tf.add_paragraph()
         p2.text = role
-        p2.font.name = "Segoe UI"
+        p2.font.name = FONT_MAIN
         p2.font.size = Pt(9.5)
         p2.font.color.rgb = acc_color
         p2.font.bold = True
-        p2.space_before = Pt(3)
+        p2.space_before = Pt(2)
 
-    # 2 High-Contrast Content Columns: The Problem vs. The Proposed Solution
-    col_w = Inches(5.7)
-    col_h = Inches(4.65)
-    col_y = Inches(2.58)
+    # Two Balanced Content Sections Below (Problem Statement vs. Proposed Solution & Objectives)
+    sec_w = Inches(5.7)
+    sec_h = Inches(4.75)
+    sec_y = Inches(2.50)
 
-    # Left Box: The Problem
-    col1_x = Inches(0.8)
-    box1 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, col1_x, col_y, col_w, col_h)
+    # Left Section: Introduction & Problem Statement
+    sec1_x = Inches(0.8)
+    box1 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sec1_x, sec_y, sec_w, sec_h)
     box1.fill.solid()
-    box1.fill.fore_color.rgb = C_CARD_BG
+    box1.fill.fore_color.rgb = C_WHITE
     box1.line.color.rgb = C_RED
     box1.line.width = Pt(1.5)
 
-    tb1 = s1.shapes.add_textbox(col1_x + Inches(0.25), col_y + Inches(0.22), col_w - Inches(0.5), col_h - Inches(0.44))
+    tb1 = s1.shapes.add_textbox(sec1_x + Inches(0.25), sec_y + Inches(0.20), sec_w - Inches(0.5), sec_h - Inches(0.4))
     tf1 = tb1.text_frame
     tf1.word_wrap = True
     tf1.margin_top = tf1.margin_bottom = tf1.margin_left = tf1.margin_right = 0
 
     p = tf1.paragraphs[0]
-    p.text = "THE PROBLEM: SCAN-SHIFT POWER CRISIS"
-    p.font.name = "Segoe UI"
-    p.font.size = Pt(12.5)
+    p.text = "PROBLEM STATEMENT: SCAN-SHIFT POWER CRISIS"
+    p.font.name = FONT_MAIN
+    p.font.size = Pt(12)
     p.font.bold = True
     p.font.color.rgb = C_RED
 
-    points_c1 = [
-        ("Excessive Switching Activity", "Unconstrained LFSR PRPG generates pseudo-independent bits with ~50% transition probability (vs. 5%–20% functional)."),
-        ("Scan Chain Ripple Effect", "Transitions ripple through cascaded scan flip-flops every shift cycle, charging/discharging parasitics for >99% of test time."),
-        ("IR-Drop & False Rejections", "High test current induces power-grid IR-drop, increasing gate delays and rejecting good dies during manufacturing test."),
-        ("Thermal Hotspots & Stress", "Elevated test power dissipation causes localized hotspots and risks packaging breakdown or physical chip burnout."),
-        ("Dynamic Power Formula", "P_dynamic = α · C_eff · V_DD² · f_shift  --> Controlling switching activity factor α directly cuts test power.")
+    prob_points = [
+        ("What is LBIST & Why Scan-Based Testing:", "Logic Built-In Self-Test (LBIST) integrates pattern generation and response compaction directly onto the silicon, eliminating reliance on multi-million dollar external ATE. Scan chains serialize flip-flops to ensure complete controllability and observability."),
+        ("Excessive Switching Activity:", "Conventional LFSR pseudorandom patterns generate ~50% bit transitions. This is 2.5x to 10x higher than normal functional operation (5%-20%)."),
+        ("The Ripple Effect in Scan Chains:", "Test vectors spend >99% of execution time shifting. Transitions ripple through every cascaded scan flip-flop, continuously charging/discharging parasitics."),
+        ("IR-Drop & Thermal Degradation:", "Excessive current causes severe power-grid voltage droop (triggering false delay faults on good dies) and localized thermal hotspots that can permanently damage the packaging."),
+        ("Dynamic Power Formula:", "P_dynamic = alpha · C_eff · V_DD^2 · f_shift  --> Regulating switching activity factor alpha directly cuts dynamic test power.")
     ]
 
-    for title, desc in points_c1:
+    for title, desc in prob_points:
         p = tf1.add_paragraph()
-        p.space_before = Pt(10)
+        p.space_before = Pt(11)
         r1 = p.add_run()
-        r1.text = "• " + title + ": "
-        r1.font.name = "Segoe UI"
+        r1.text = "• " + title + " "
+        r1.font.name = FONT_MAIN
         r1.font.size = Pt(9.5)
         r1.font.bold = True
-        r1.font.color.rgb = C_TITLE_NAVY
+        r1.font.color.rgb = C_NAVY_HEADING
 
         r2 = p.add_run()
         r2.text = desc
-        r2.font.name = "Segoe UI"
+        r2.font.name = FONT_MAIN
         r2.font.size = Pt(9)
         r2.font.color.rgb = C_TEXT_DARK
 
-    # Right Box: The Proposed Solution
-    col2_x = Inches(6.833)
-    box2 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, col2_x, col_y, col_w, col_h)
+    # Right Section: Proposed Solution & Main Objectives
+    sec2_x = Inches(6.833)
+    box2 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sec2_x, sec_y, sec_w, sec_h)
     box2.fill.solid()
-    box2.fill.fore_color.rgb = C_CARD_BG
-    box2.line.color.rgb = C_GREEN
+    box2.fill.fore_color.rgb = C_WHITE
+    box2.line.color.rgb = C_TEAL
     box2.line.width = Pt(1.5)
 
-    tb2 = s1.shapes.add_textbox(col2_x + Inches(0.25), col_y + Inches(0.22), col_w - Inches(0.5), col_h - Inches(0.44))
+    tb2 = s1.shapes.add_textbox(sec2_x + Inches(0.25), sec_y + Inches(0.20), sec_w - Inches(0.5), sec_h - Inches(0.4))
     tf2 = tb2.text_frame
     tf2.word_wrap = True
     tf2.margin_top = tf2.margin_bottom = tf2.margin_left = tf2.margin_right = 0
 
     p = tf2.paragraphs[0]
     p.text = "PROPOSED SOLUTION & PROJECT OBJECTIVES"
-    p.font.name = "Segoe UI"
-    p.font.size = Pt(12.5)
+    p.font.name = FONT_MAIN
+    p.font.size = Pt(12)
     p.font.bold = True
-    p.font.color.rgb = C_GREEN
+    p.font.color.rgb = C_TEAL
 
-    points_c2 = [
-        ("Core Project Goal", "Design an autonomous scan-based LBIST engine that regulates scan-shift toggle rates to arbitrary targets (10% to 60%, or Bypass)."),
-        ("1. Galois LFSR Pattern Generation", "16-bit maximal-length LFSR (polynomial x^16 + x^14 + x^13 + x^11 + 1) with autonomous zero-lockup recovery."),
-        ("2. Programmable Pattern Modifier", "Dual-Domain Rotating Transition Suppression (DDRTS) holds excess bit flips via modulo-16 token ring to eliminate scan starvation."),
-        ("3. MIPS32 Scan-Chain Ingestion", "Applies modified patterns to 16 parallel scan chains and serial scan input of MIPS32 processor core."),
-        ("4. Signature Response Compaction", "Compacts circuit responses via Multiple-Input Signature Register (MISR) into a 16-bit golden signature.")
+    p_sol = tf2.add_paragraph()
+    p_sol.space_before = Pt(6)
+    p_sol_r1 = p_sol.add_run()
+    p_sol_r1.text = "Proposed Approach: "
+    p_sol_r1.font.name = FONT_MAIN
+    p_sol_r1.font.size = Pt(9.5)
+    p_sol_r1.font.bold = True
+    p_sol_r1.font.color.rgb = C_NAVY_HEADING
+    p_sol_r2 = p_sol.add_run()
+    p_sol_r2.text = "A hardware-efficient programmable toggle-rate control technique that selectively modifies PRPG patterns to match desired scan-shift toggle limits (10%-60% or Bypass) without sacrificing fault coverage or test time."
+    p_sol_r2.font.name = FONT_MAIN
+    p_sol_r2.font.size = Pt(9)
+    p_sol_r2.font.color.rgb = C_TEXT_DARK
+
+    obj_header = tf2.add_paragraph()
+    obj_header.space_before = Pt(8)
+    obj_hr = obj_header.add_run()
+    obj_hr.text = "Main Project Objectives:"
+    obj_hr.font.name = FONT_MAIN
+    obj_hr.font.size = Pt(10)
+    obj_hr.font.bold = True
+    obj_hr.font.color.rgb = C_NAVY_SUB
+
+    objectives = [
+        ("1. Pseudorandom Pattern Generation:", "Design a parameterizable 16-bit Galois LFSR with autonomous anti-lockup zero-recovery logic."),
+        ("2. Programmable Pattern Modification:", "Implement a Dual-Domain Rotating Transition Suppressor (DDRTS) with modulo-16 token ring to eliminate scan starvation."),
+        ("3. MIPS32 Scan Application:", "Partition and apply modified vectors to 16 parallel scan chains and serial scan input of synthesizable MIPS32 processor core."),
+        ("4. Response Compaction & Analysis:", "Compact test responses via 16-bit Multiple-Input Signature Register (MISR) and evaluate on-chip switching activity, power reduction, and test effectiveness.")
     ]
 
-    for title, desc in points_c2:
+    for o_title, o_desc in objectives:
         p = tf2.add_paragraph()
-        p.space_before = Pt(10)
+        p.space_before = Pt(8)
         r1 = p.add_run()
-        r1.text = "✔ " + title + ": "
-        r1.font.name = "Segoe UI"
+        r1.text = "✔ " + o_title + " "
+        r1.font.name = FONT_MAIN
         r1.font.size = Pt(9.5)
         r1.font.bold = True
-        r1.font.color.rgb = C_TITLE_NAVY
+        r1.font.color.rgb = C_NAVY_HEADING
 
         r2 = p.add_run()
-        r2.text = desc
-        r2.font.name = "Segoe UI"
+        r2.text = o_desc
+        r2.font.name = FONT_MAIN
         r2.font.size = Pt(9)
         r2.font.color.rgb = C_TEXT_DARK
 
+    p_val = tf2.add_paragraph()
+    p_val.space_before = Pt(10)
+    p_val_r1 = p_val.add_run()
+    p_val_r1.text = "Target Innovation: "
+    p_val_r1.font.name = FONT_MAIN
+    p_val_r1.font.size = Pt(9.5)
+    p_val_r1.font.bold = True
+    p_val_r1.font.color.rgb = C_TEAL
+    p_val_r2 = p_val.add_run()
+    p_val_r2.text = "Enables arbitrary scan-shift power throttling (down to 10% activity) with zero test clock latency penalty and zero scan chain starvation."
+    p_val_r2.font.name = FONT_MAIN
+    p_val_r2.font.size = Pt(9)
+    p_val_r2.font.color.rgb = C_TEXT_DARK
+
     # =========================================================================
-    # SLIDE 2: PROPOSED LBIST ARCHITECTURE (COMPACT FLOW DIAGRAM)
+    # SLIDE 2: PROPOSED ARCHITECTURE AND WORKING FLOW (COMPACT FLOW DIAGRAM)
     # =========================================================================
     s2 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s2)
+    apply_slide_background(s2)
 
-    add_header(s2,
-               "Proposed LBIST Architecture & Methodology (Flow Diagram)",
-               "End-to-End Test Control, Pattern Generation, Scan-Shift Ingestion & Response Compaction",
-               2)
+    render_header(s2,
+                  "Proposed LBIST Architecture and Methodology",
+                  "Compact Testing Flow Diagram & Hardware Working Principle",
+                  2)
 
-    # Top Central Control Subgraph (Spanning horizontally across top)
-    fsm_x = Inches(0.8)
-    fsm_y = Inches(1.48)
-    fsm_w = Inches(11.733)
-    fsm_h = Inches(1.15)
+    # Master Container for Flow Diagram (Clean compact card)
+    fd_x = Inches(0.8)
+    fd_y = Inches(1.45)
+    fd_w = Inches(11.733)
+    fd_h = Inches(3.20)
 
-    fsm_bg = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, fsm_x, fsm_y, fsm_w, fsm_h)
-    fsm_bg.fill.solid()
-    fsm_bg.fill.fore_color.rgb = RGBColor(238, 242, 255) # Light Indigo
-    fsm_bg.line.color.rgb = C_BLUE
-    fsm_bg.line.width = Pt(1.5)
+    fd_card = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, fd_x, fd_y, fd_w, fd_h)
+    fd_card.fill.solid()
+    fd_card.fill.fore_color.rgb = C_WHITE
+    fd_card.line.color.rgb = C_CARD_BORDER
+    fd_card.line.width = Pt(1.5)
 
-    # Subgraph Title Pill
-    spill = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, fsm_x + Inches(0.2), fsm_y + Inches(0.1), Inches(4.5), Inches(0.28))
-    spill.fill.solid()
-    spill.fill.fore_color.rgb = C_BLUE
-    spill.line.fill.background()
-    sptf = spill.text_frame
-    spp = sptf.paragraphs[0]
-    spp.text = "1. CENTRAL LBIST CONTROLLER & FSM SEQUENCER"
-    spp.font.name = "Segoe UI"
-    spp.font.size = Pt(9)
-    spp.font.bold = True
-    spp.font.color.rgb = RGBColor(255, 255, 255)
-    spp.alignment = PP_ALIGN.CENTER
+    # Top Control Unit (Block 1: LBIST Controller)
+    ctrl_w = Inches(11.333)
+    ctrl_h = Inches(0.80)
+    ctrl_x = fd_x + Inches(0.2)
+    ctrl_y = fd_y + Inches(0.15)
 
-    # Control Inside Blocks (3 Horizontal blocks)
-    ctrl_blocks = [
-        ("Test State Controller", "Sequences Reset -> Shift -> Capture -> Evaluate", Inches(0.2), Inches(3.6)),
-        ("Target Rate Selector", "Decodes 10%-60% rate limits & seed load", Inches(4.05), Inches(3.5)),
-        ("Scan & Clock Control", "Drives lbist_en, scan_en, & test clocks", Inches(7.8), Inches(3.7))
+    ctrl_box = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, ctrl_x, ctrl_y, ctrl_w, ctrl_h)
+    ctrl_box.fill.solid()
+    ctrl_box.fill.fore_color.rgb = RGBColor(238, 242, 255) # Light Indigo
+    ctrl_box.line.color.rgb = C_ORANGE
+    ctrl_box.line.width = Pt(1.5)
+
+    ctb = s2.shapes.add_textbox(ctrl_x + Inches(0.2), ctrl_y + Inches(0.08), ctrl_w - Inches(0.4), ctrl_h - Inches(0.16))
+    ctf = ctb.text_frame
+    ctf.word_wrap = True
+    ctf.margin_top = ctf.margin_bottom = ctf.margin_left = ctf.margin_right = 0
+    cp1 = ctf.paragraphs[0]
+    cp1.text = "1. LBIST Controller (Member 3 – Gaurav Tiwari)"
+    cp1.font.name = FONT_MAIN
+    cp1.font.size = Pt(10)
+    cp1.font.bold = True
+    cp1.font.color.rgb = C_ORANGE
+    cp1.alignment = PP_ALIGN.CENTER
+    cp2 = ctf.add_paragraph()
+    cp2.text = "FSM Master: Initializes test, loads seed, sets target rate (10%-60%/Bypass), orchestrates Shift vs. Capture modes, and clocks test sequence."
+    cp2.font.name = FONT_MAIN
+    cp2.font.size = Pt(8.5)
+    cp2.font.color.rgb = C_TEXT_DARK
+    cp2.alignment = PP_ALIGN.CENTER
+
+    # Control Dispatch Downward Arrows (3 small arrows to indicate control dispatch)
+    ctrl_arrows = [
+        (ctrl_x + Inches(1.5), "rate_sel, seed_load"),
+        (ctrl_x + Inches(5.6), "scan_enable, shift/capture clk"),
+        (ctrl_x + Inches(9.8), "misr_en, golden_sig")
     ]
-    for c_title, c_desc, c_off_x, c_bw in ctrl_blocks:
-        cb = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, fsm_x + c_off_x, fsm_y + Inches(0.46), c_bw, Inches(0.58))
-        cb.fill.solid()
-        cb.fill.fore_color.rgb = C_CARD_BG
-        cb.line.color.rgb = C_CARD_BORDER
-        cb.line.width = Pt(1)
-        ctf = cb.text_frame
-        ctf.word_wrap = True
-        ctf.margin_top = ctf.margin_bottom = ctf.margin_left = ctf.margin_right = 0
-        cp1 = ctf.paragraphs[0]
-        cp1.text = c_title
-        cp1.font.name = "Segoe UI"
-        cp1.font.size = Pt(8.5)
-        cp1.font.bold = True
-        cp1.font.color.rgb = C_SUBTITLE_BLUE
-        cp1.alignment = PP_ALIGN.CENTER
-        cp2 = ctf.add_paragraph()
-        cp2.text = c_desc
-        cp2.font.name = "Segoe UI"
-        cp2.font.size = Pt(7.5)
-        cp2.font.color.rgb = C_TEXT_MUTED
-        cp2.alignment = PP_ALIGN.CENTER
+    for ax, alabel in ctrl_arrows:
+        c_arr = s2.shapes.add_shape(MSO_SHAPE.DOWN_ARROW, ax, ctrl_y + ctrl_h + Inches(0.02), Inches(0.18), Inches(0.22))
+        c_arr.fill.solid()
+        c_arr.fill.fore_color.rgb = C_ORANGE
+        c_arr.line.fill.background()
 
-    # Downward Control Arrows from Controller to 3 Subsystems Below
-    down_arrows = [
-        (Inches(2.7), "lbist_en, seed_load, rate_sel[2:0]"),
-        (Inches(6.6), "scan_enable, shift_clk, capture_clk"),
-        (Inches(10.5), "misr_enable, golden_signature")
+    # 6 Datapath Pipeline Blocks (Blocks 2 to 7) in a clear Left-to-Right sequence
+    flow_y = ctrl_y + ctrl_h + Inches(0.28)
+    flow_blocks = [
+        ("2. PRPG (LFSR)", "16-Bit Galois LFSR\nPoly: 0xB400, Seed: 0xACE1\nAutonomous Anti-Lockup", C_TEAL, "Member 2"),
+        ("3. Pattern Modifier", "DDRTS Suppression Engine\nModulo-16 Token Ring\n10%-60% Fractional Dither", C_TEAL, "Member 2"),
+        ("4. MIPS32 Scan Chains", "16 Parallel Scan Chains\nSequential Mux-DFF Insertion\nLoads scan_data[15:0]", C_BLUE, "Member 1"),
+        ("5. Response Capture", "MIPS32 Core Execution\nALU, RegFile, PC capture\nFunctional combinational test", C_BLUE, "Member 1"),
+        ("6. MISR Compactor", "16-Bit Signature Register\nMultiple-Input Compaction\nCompresses core responses", C_ORANGE, "Member 3"),
+        ("7. Signature Analysis", "Golden Signature Comparator\nPass / Fail Status Output\nFault Detection Verification", C_ORANGE, "Member 3")
     ]
-    for ax, alabel in down_arrows:
-        arr = s2.shapes.add_shape(MSO_SHAPE.DOWN_ARROW, ax, fsm_y + fsm_h + Inches(0.04), Inches(0.22), Inches(0.28))
-        arr.fill.solid()
-        arr.fill.fore_color.rgb = C_BLUE
-        arr.line.fill.background()
 
-    # 3 Main Datapath Subgraphs in a Horizontal Row (Left to Right Flow)
-    sg_y = Inches(3.02)
-    sg_h = Inches(3.35)
-    
-    # Subgraph 2: PRPG Subsystem (Left)
-    sg2_x = Inches(0.8)
-    sg2_w = Inches(3.6)
-    sg2 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg2_x, sg_y, sg2_w, sg_h)
-    sg2.fill.solid()
-    sg2.fill.fore_color.rgb = RGBColor(240, 253, 250) # Light Teal
-    sg2.line.color.rgb = C_TEAL
-    sg2.line.width = Pt(1.5)
+    blk_w = Inches(1.68)
+    blk_h = Inches(1.65)
+    blk_gap = Inches(0.25)
+    start_x = fd_x + Inches(0.2)
 
-    spill2 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg2_x + Inches(0.15), sg_y + Inches(0.1), Inches(3.3), Inches(0.28))
-    spill2.fill.solid()
-    spill2.fill.fore_color.rgb = C_TEAL
-    spill2.line.fill.background()
-    sptf2 = spill2.text_frame
-    spp2 = sptf2.paragraphs[0]
-    spp2.text = "2. PRPG & PATTERN MODIFIER (MEMBER 2)"
-    spp2.font.name = "Segoe UI"
-    spp2.font.size = Pt(8.5)
-    spp2.font.bold = True
-    spp2.font.color.rgb = RGBColor(255, 255, 255)
-    spp2.alignment = PP_ALIGN.CENTER
+    for i, (b_title, b_desc, b_color, b_owner) in enumerate(flow_blocks):
+        bx = start_x + i * (blk_w + blk_gap)
+        bbox = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, bx, flow_y, blk_w, blk_h)
+        bbox.fill.solid()
+        bbox.fill.fore_color.rgb = C_WHITE
+        bbox.line.color.rgb = b_color
+        bbox.line.width = Pt(1.5)
 
-    prpg_nodes = [
-        ("16-Bit Galois LFSR Core", "Poly: x^16 + x^14 + x^13 + x^11 + 1\nSeed: 0xACE1 with Anti-Lockup logic"),
-        ("Dual-Domain Rotating Modifier (DDRTS)", "Modulo-16 Rotating Token Ring\nPrevents Scan Starvation & Bit Masking"),
-        ("Fractional Dither Controller", "First-Order Sigma-Delta Multiplier\nExact Target Rates (10% to 60%)")
+        btb = s2.shapes.add_textbox(bx + Inches(0.06), flow_y + Inches(0.08), blk_w - Inches(0.12), blk_h - Inches(0.16))
+        btf = btb.text_frame
+        btf.word_wrap = True
+        btf.margin_top = btf.margin_bottom = btf.margin_left = btf.margin_right = 0
+
+        bp1 = btf.paragraphs[0]
+        bp1.text = b_title
+        bp1.font.name = FONT_MAIN
+        bp1.font.size = Pt(8.5)
+        bp1.font.bold = True
+        bp1.font.color.rgb = b_color
+        bp1.alignment = PP_ALIGN.CENTER
+
+        bp2 = btf.add_paragraph()
+        bp2.text = b_desc
+        bp2.font.name = FONT_MAIN
+        bp2.font.size = Pt(7.5)
+        bp2.font.color.rgb = C_TEXT_DARK
+        bp2.alignment = PP_ALIGN.CENTER
+        bp2.space_before = Pt(3)
+
+        bp3 = btf.add_paragraph()
+        bp3.text = f"[{b_owner}]"
+        bp3.font.name = FONT_MAIN
+        bp3.font.size = Pt(7)
+        bp3.font.bold = True
+        bp3.font.color.rgb = b_color
+        bp3.alignment = PP_ALIGN.CENTER
+        bp3.space_before = Pt(3)
+
+        # Draw connecting arrow to next block (between blocks 2->3, 3->4, 4->5, 5->6, 6->7)
+        if i < len(flow_blocks) - 1:
+            arr_x = bx + blk_w + Inches(0.04)
+            arr = s2.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, arr_x, flow_y + Inches(0.68), Inches(0.17), Inches(0.24))
+            arr.fill.solid()
+            arr.fill.fore_color.rgb = C_BORDER_MID
+            arr.line.fill.background()
+
+    # Bottom Container: Working Principle (3-4 concise steps)
+    wp_x = Inches(0.8)
+    wp_y = Inches(4.82)
+    wp_w = Inches(11.733)
+    wp_h = Inches(2.35)
+
+    wp_card = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, wp_x, wp_y, wp_w, wp_h)
+    wp_card.fill.solid()
+    wp_card.fill.fore_color.rgb = C_WHITE
+    wp_card.line.color.rgb = C_NAVY_SUB
+    wp_card.line.width = Pt(1.5)
+
+    wptb = s2.shapes.add_textbox(wp_x + Inches(0.2), wp_y + Inches(0.12), wp_w - Inches(0.4), wp_h - Inches(0.24))
+    wptf = wptb.text_frame
+    wptf.word_wrap = True
+    wptf.margin_top = wptf.margin_bottom = wptf.margin_left = wptf.margin_right = 0
+
+    wpp = wptf.paragraphs[0]
+    wpp.text = "WORKING PRINCIPLE (4-STEP OPERATING SEQUENCE)"
+    wpp.font.name = FONT_MAIN
+    wpp.font.size = Pt(11)
+    wpp.font.bold = True
+    wpp.font.color.rgb = C_NAVY_SUB
+
+    steps = [
+        ("Step 1: Test Initialization & Pattern Generation", "The LBIST Controller asserts reset and loads the initial seed (0xACE1). The 16-bit Galois LFSR autonomously advances each clock cycle to generate an exhaustive, pseudo-random bit sequence.", C_TEAL),
+        ("Step 2: Toggle-Rate Modification", "The Programmable Pattern Modifier compares consecutive LFSR words against the programmed toggle limit. The modulo-16 token ring cyclically suppresses excess transitions, enforcing target switching activity (10%-60%) with zero scan starvation.", C_TEAL),
+        ("Step 3: Scan Application & Response Capture", "During Scan Shift (scan_en = '1'), low-power modified patterns are shifted into the 16 parallel MIPS32 scan chains. Next, the controller pulses a single functional capture clock (scan_en = '0'), latching the combinational ALU/datapath response.", C_BLUE),
+        ("Step 4: Response Compaction & Signature Analysis", "Captured responses are shifted out into the 16-bit MISR, which compacts multi-cycle responses into a unique test signature. The Signature Analyzer compares it against the golden reference, asserting PASS/FAIL.", C_ORANGE)
     ]
-    for idx, (p_t, p_d) in enumerate(prpg_nodes):
-        pb = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg2_x + Inches(0.2), sg_y + Inches(0.48) + idx * Inches(0.9), sg2_w - Inches(0.4), Inches(0.8))
-        pb.fill.solid()
-        pb.fill.fore_color.rgb = C_CARD_BG
-        pb.line.color.rgb = C_CARD_BORDER
-        pb.line.width = Pt(1)
-        ptf = pb.text_frame
-        ptf.word_wrap = True
-        ptf.margin_top = ptf.margin_bottom = ptf.margin_left = ptf.margin_right = 0
-        pp1 = ptf.paragraphs[0]
-        pp1.text = p_t
-        pp1.font.name = "Segoe UI"
-        pp1.font.size = Pt(8.5)
-        pp1.font.bold = True
-        pp1.font.color.rgb = C_TEAL
-        pp1.alignment = PP_ALIGN.CENTER
-        pp2 = ptf.add_paragraph()
-        pp2.text = p_d
-        pp2.font.name = "Segoe UI"
-        pp2.font.size = Pt(7.5)
-        pp2.font.color.rgb = C_TEXT_MUTED
-        pp2.alignment = PP_ALIGN.CENTER
 
-    # Horizontal Flow Arrow 1 -> 2
-    arr1_2 = s2.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, sg2_x + sg2_w + Inches(0.06), sg_y + Inches(1.4), Inches(0.34), Inches(0.4))
-    arr1_2.fill.solid()
-    arr1_2.fill.fore_color.rgb = C_BLUE
-    arr1_2.line.fill.background()
+    for s_title, s_desc, s_color in steps:
+        p = wptf.add_paragraph()
+        p.space_before = Pt(8)
+        r1 = p.add_run()
+        r1.text = "• " + s_title + ": "
+        r1.font.name = FONT_MAIN
+        r1.font.size = Pt(9)
+        r1.font.bold = True
+        r1.font.color.rgb = s_color
 
-    # Subgraph 3: MIPS32 CUT Subsystem (Center)
-    sg3_x = Inches(4.85)
-    sg3_w = Inches(3.6)
-    sg3 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg3_x, sg_y, sg3_w, sg_h)
-    sg3.fill.solid()
-    sg3.fill.fore_color.rgb = RGBColor(239, 246, 255) # Light Blue
-    sg3.line.color.rgb = C_BLUE
-    sg3.line.width = Pt(1.5)
-
-    spill3 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg3_x + Inches(0.15), sg_y + Inches(0.1), Inches(3.3), Inches(0.28))
-    spill3.fill.solid()
-    spill3.fill.fore_color.rgb = C_BLUE
-    spill3.line.fill.background()
-    sptf3 = spill3.text_frame
-    spp3 = sptf3.paragraphs[0]
-    spp3.text = "3. CIRCUIT UNDER TEST: MIPS32 (MEMBER 1)"
-    spp3.font.name = "Segoe UI"
-    spp3.font.size = Pt(8.5)
-    spp3.font.bold = True
-    spp3.font.color.rgb = RGBColor(255, 255, 255)
-    spp3.alignment = PP_ALIGN.CENTER
-
-    mips_nodes = [
-        ("16 Parallel Scan Chains", "Mux-DFF Sequential Cell Insertion\nLoads scan_data_parallel[15:0]"),
-        ("MIPS32 Core Execution Units", "32-bit Datapath: ALU, Register File,\nProgram Counter (PC) & Control Logic"),
-        ("Dual Operating Modes", "Scan Shift Mode (scan_en = '1')\n<--> Functional Capture (scan_en = '0')")
-    ]
-    for idx, (m_t, m_d) in enumerate(mips_nodes):
-        mb = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg3_x + Inches(0.2), sg_y + Inches(0.48) + idx * Inches(0.9), sg3_w - Inches(0.4), Inches(0.8))
-        mb.fill.solid()
-        mb.fill.fore_color.rgb = C_CARD_BG
-        mb.line.color.rgb = C_CARD_BORDER
-        mb.line.width = Pt(1)
-        mtf = mb.text_frame
-        mtf.word_wrap = True
-        mtf.margin_top = mtf.margin_bottom = mtf.margin_left = mtf.margin_right = 0
-        mp1 = mtf.paragraphs[0]
-        mp1.text = m_t
-        mp1.font.name = "Segoe UI"
-        mp1.font.size = Pt(8.5)
-        mp1.font.bold = True
-        mp1.font.color.rgb = C_SUBTITLE_BLUE
-        mp1.alignment = PP_ALIGN.CENTER
-        mp2 = mtf.add_paragraph()
-        mp2.text = m_d
-        mp2.font.name = "Segoe UI"
-        mp2.font.size = Pt(7.5)
-        mp2.font.color.rgb = C_TEXT_MUTED
-        mp2.alignment = PP_ALIGN.CENTER
-
-    # Horizontal Flow Arrow 2 -> 3
-    arr2_3 = s2.shapes.add_shape(MSO_SHAPE.RIGHT_ARROW, sg3_x + sg3_w + Inches(0.06), sg_y + Inches(1.4), Inches(0.34), Inches(0.4))
-    arr2_3.fill.solid()
-    arr2_3.fill.fore_color.rgb = C_AMBER
-    arr2_3.line.fill.background()
-
-    # Subgraph 4: Response Compaction & Analysis (Right)
-    sg4_x = Inches(8.9)
-    sg4_w = Inches(3.633)
-    sg4 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg4_x, sg_y, sg4_w, sg_h)
-    sg4.fill.solid()
-    sg4.fill.fore_color.rgb = RGBColor(255, 251, 235) # Light Amber
-    sg4.line.color.rgb = C_AMBER
-    sg4.line.width = Pt(1.5)
-
-    spill4 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg4_x + Inches(0.15), sg_y + Inches(0.1), Inches(3.3), Inches(0.28))
-    spill4.fill.solid()
-    spill4.fill.fore_color.rgb = C_AMBER
-    spill4.line.fill.background()
-    sptf4 = spill4.text_frame
-    spp4 = sptf4.paragraphs[0]
-    spp4.text = "4. RESPONSE COMPACTOR & MISR (MEMBER 3)"
-    spp4.font.name = "Segoe UI"
-    spp4.font.size = Pt(8.5)
-    spp4.font.bold = True
-    spp4.font.color.rgb = RGBColor(255, 255, 255)
-    spp4.alignment = PP_ALIGN.CENTER
-
-    resp_nodes = [
-        ("16-Bit MISR Compactor", "Multiple-Input Signature Register\nCompacts parallel CUT output responses"),
-        ("Golden Signature Register", "Holds expected fault-free signature\nfor real-time signature comparison"),
-        ("Fault Analysis & Status", "Single stuck-at fault injection,\npass/fail detection & coverage report")
-    ]
-    for idx, (r_t, r_d) in enumerate(resp_nodes):
-        rb = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, sg4_x + Inches(0.2), sg_y + Inches(0.48) + idx * Inches(0.9), sg4_w - Inches(0.4), Inches(0.8))
-        rb.fill.solid()
-        rb.fill.fore_color.rgb = C_CARD_BG
-        rb.line.color.rgb = C_CARD_BORDER
-        rb.line.width = Pt(1)
-        rtf = rb.text_frame
-        rtf.word_wrap = True
-        rtf.margin_top = rtf.margin_bottom = rtf.margin_left = rtf.margin_right = 0
-        rp1 = rtf.paragraphs[0]
-        rp1.text = r_t
-        rp1.font.name = "Segoe UI"
-        rp1.font.size = Pt(8.5)
-        rp1.font.bold = True
-        rp1.font.color.rgb = C_AMBER
-        rp1.alignment = PP_ALIGN.CENTER
-        rp2 = rtf.add_paragraph()
-        rp2.text = r_d
-        rp2.font.name = "Segoe UI"
-        rp2.font.size = Pt(7.5)
-        rp2.font.color.rgb = C_TEXT_MUTED
-        rp2.alignment = PP_ALIGN.CENTER
-
-    # Bottom Architecture Summary Strip
-    bs_w = Inches(11.733)
-    bs_h = Inches(0.42)
-    bs_y = Inches(6.52)
-    bs_box = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), bs_y, bs_w, bs_h)
-    bs_box.fill.solid()
-    bs_box.fill.fore_color.rgb = RGBColor(241, 245, 249)
-    bs_box.line.color.rgb = C_CARD_BORDER_HI
-    bs_box.line.width = Pt(1)
-
-    bstb = s2.shapes.add_textbox(Inches(0.9), bs_y + Inches(0.06), bs_w - Inches(0.2), bs_h - Inches(0.12))
-    bstf = bstb.text_frame
-    bsp = bstf.paragraphs[0]
-    bsp.text = "Closed-Loop Flow: Controller drives Shift Mode -> PRPG injects toggle-controlled patterns -> MIPS32 captures responses -> MISR produces Pass/Fail signature"
-    bsp.alignment = PP_ALIGN.CENTER
-    bsp.font.name = "Segoe UI"
-    bsp.font.size = Pt(8.5)
-    bsp.font.bold = True
-    bsp.font.color.rgb = C_SUBTITLE_BLUE
+        r2 = p.add_run()
+        r2.text = s_desc
+        r2.font.name = FONT_MAIN
+        r2.font.size = Pt(8.5)
+        r2.font.color.rgb = C_TEXT_DARK
 
     # =========================================================================
-    # SLIDE 3: EXPERIMENTAL RESULTS, VIVADO SYNTHESIS & CONCLUSION (ALL-IN-ONE)
+    # SLIDE 3: EXPERIMENTAL RESULTS, OBSERVATIONS AND CONCLUSION
     # =========================================================================
     s3 = prs.slides.add_slide(blank_layout)
-    set_slide_background(s3)
+    apply_slide_background(s3)
 
-    add_header(s3,
-               "Experimental Results, Vivado Synthesis & Conclusion",
-               "Measured Toggle Rates, Total On-Chip Power Reduction, Vivado Utilization & Final Takeaways",
-               3)
+    render_header(s3,
+                  "Results, Observations and Conclusion",
+                  "Experimental Toggle Rates, Total On-Chip Power Reduction, Vivado Synthesis & Final Takeaways",
+                  3)
 
-    # LEFT COLUMN: Results Table & Vivado Synthesis Results
+    # LEFT SECTION: Experimental Results (Table, Synthesis, Chart)
     left_x = Inches(0.8)
     left_w = Inches(5.7)
 
     # 1. Experimental Toggle Rate Table Container
-    tbox_y = Inches(1.48)
-    tbox_h = Inches(3.15)
+    tbox_y = Inches(1.45)
+    tbox_h = Inches(3.20)
     tbox = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_x, tbox_y, left_w, tbox_h)
     tbox.fill.solid()
-    tbox.fill.fore_color.rgb = C_CARD_BG
+    tbox.fill.fore_color.rgb = C_WHITE
     tbox.line.color.rgb = C_CARD_BORDER
     tbox.line.width = Pt(1.5)
 
-    ttb = s3.shapes.add_textbox(left_x + Inches(0.18), tbox_y + Inches(0.12), left_w - Inches(0.36), Inches(0.35))
+    ttb = s3.shapes.add_textbox(left_x + Inches(0.18), tbox_y + Inches(0.10), left_w - Inches(0.36), Inches(0.32))
     ttf = ttb.text_frame
     tp = ttf.paragraphs[0]
-    tp.text = "MEASURED RESULTS (VIVADO XSIM SIMULATION)"
-    tp.font.name = "Segoe UI"
-    tp.font.size = Pt(10)
+    tp.text = "MEASURED RESULTS: CONVENTIONAL VS. MODIFIED PRPG"
+    tp.font.name = FONT_MAIN
+    tp.font.size = Pt(9.5)
     tp.font.bold = True
-    tp.font.color.rgb = C_SUBTITLE_BLUE
+    tp.font.color.rgb = C_NAVY_SUB
 
     # Results Table
-    table_shape = s3.shapes.add_table(8, 5, left_x + Inches(0.15), tbox_y + Inches(0.42), left_w - Inches(0.3), Inches(2.1))
+    table_shape = s3.shapes.add_table(8, 5, left_x + Inches(0.12), tbox_y + Inches(0.40), left_w - Inches(0.24), Inches(2.15))
     tbl = table_shape.table
     tbl.columns[0].width = Inches(1.05)
     tbl.columns[1].width = Inches(1.0)
     tbl.columns[2].width = Inches(1.0)
     tbl.columns[3].width = Inches(1.0)
-    tbl.columns[4].width = Inches(1.35)
+    tbl.columns[4].width = Inches(1.41)
 
     headers = ["Target", "Conv Word", "Mod Word", "Mod Scan", "Total On-Chip Power"]
     for col_idx, h in enumerate(headers):
         cell = tbl.cell(0, col_idx)
         cell.fill.solid()
-        cell.fill.fore_color.rgb = C_SUBTITLE_BLUE
+        cell.fill.fore_color.rgb = C_NAVY_SUB
         p = cell.text_frame.paragraphs[0]
         p.text = h
         p.alignment = PP_ALIGN.CENTER
-        p.font.name = "Segoe UI"
+        p.font.name = FONT_MAIN
         p.font.size = Pt(8)
         p.font.bold = True
-        p.font.color.rgb = RGBColor(255, 255, 255)
+        p.font.color.rgb = C_WHITE
 
     table_data = [
         ("Bypass (100%)", "48.50%", "49.00%", "38.44%", "0.00% (Baseline)"),
@@ -563,60 +513,60 @@ def build_deck():
         for col_idx, val in enumerate(row):
             cell = tbl.cell(row_idx + 1, col_idx)
             cell.fill.solid()
-            cell.fill.fore_color.rgb = RGBColor(255, 255, 255) if row_idx % 2 == 0 else RGBColor(241, 245, 249)
+            cell.fill.fore_color.rgb = C_WHITE if row_idx % 2 == 0 else RGBColor(241, 245, 249)
             p = cell.text_frame.paragraphs[0]
             p.text = val
             p.alignment = PP_ALIGN.CENTER
-            p.font.name = "Segoe UI"
+            p.font.name = FONT_MAIN
             p.font.size = Pt(7.5)
             if col_idx == 4 and "Saved" in val:
                 p.font.bold = True
                 p.font.color.rgb = C_GREEN
             elif col_idx == 0:
                 p.font.bold = True
-                p.font.color.rgb = C_TITLE_NAVY
+                p.font.color.rgb = C_NAVY_HEADING
             else:
                 p.font.color.rgb = C_TEXT_DARK
 
-    # Clarification note inside results box
-    ntb = s3.shapes.add_textbox(left_x + Inches(0.18), tbox_y + Inches(2.58), left_w - Inches(0.36), Inches(0.5))
+    # Clarification note on power
+    ntb = s3.shapes.add_textbox(left_x + Inches(0.18), tbox_y + Inches(2.62), left_w - Inches(0.36), Inches(0.48))
     ntf = ntb.text_frame
     ntf.word_wrap = True
     ntf.margin_top = ntf.margin_bottom = ntf.margin_left = ntf.margin_right = 0
     np = ntf.paragraphs[0]
     np.text = "* Power reduction measures Total On-Chip Scan-Shift Power across all core scan chains during testing (not limited to isolated LBIST logic)."
-    np.font.name = "Segoe UI"
-    np.font.size = Pt(7.5)
+    np.font.name = FONT_MAIN
+    np.font.size = Pt(7.2)
     np.font.bold = True
     np.font.color.rgb = C_RED
 
-    # 2. Vivado Hardware Synthesis Results Container (Directly from User Screenshot)
-    sbox_y = Inches(4.75)
-    sbox_h = Inches(2.20)
+    # 2. Vivado Hardware Synthesis Results Container
+    sbox_y = Inches(4.78)
+    sbox_h = Inches(2.35)
     sbox = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_x, sbox_y, left_w, sbox_h)
     sbox.fill.solid()
-    sbox.fill.fore_color.rgb = C_CARD_BG
+    sbox.fill.fore_color.rgb = C_WHITE
     sbox.line.color.rgb = C_BLUE
     sbox.line.width = Pt(1.5)
 
-    stb = s3.shapes.add_textbox(left_x + Inches(0.18), sbox_y + Inches(0.10), left_w - Inches(0.36), Inches(0.32))
+    stb = s3.shapes.add_textbox(left_x + Inches(0.18), sbox_y + Inches(0.10), left_w - Inches(0.36), Inches(0.30))
     stf = stb.text_frame
     sp = stf.paragraphs[0]
     sp.text = "VIVADO HARDWARE SYNTHESIS (synth_design Complete!)"
-    sp.font.name = "Segoe UI"
-    sp.font.size = Pt(10)
+    sp.font.name = FONT_MAIN
+    sp.font.size = Pt(9.5)
     sp.font.bold = True
-    sp.font.color.rgb = C_SUBTITLE_BLUE
+    sp.font.color.rgb = C_BLUE
 
-    # Vivado Resource Table (synth_1 Design Runs)
-    vtable_shape = s3.shapes.add_table(2, 6, left_x + Inches(0.15), sbox_y + Inches(0.40), left_w - Inches(0.3), Inches(0.72))
+    # Vivado Resource Table
+    vtable_shape = s3.shapes.add_table(2, 6, left_x + Inches(0.12), sbox_y + Inches(0.38), left_w - Inches(0.24), Inches(0.70))
     vtbl = vtable_shape.table
-    vtbl.columns[0].width = Inches(1.1)
+    vtbl.columns[0].width = Inches(1.15)
     vtbl.columns[1].width = Inches(0.85)
     vtbl.columns[2].width = Inches(0.85)
     vtbl.columns[3].width = Inches(0.85)
     vtbl.columns[4].width = Inches(0.85)
-    vtbl.columns[5].width = Inches(0.9)
+    vtbl.columns[5].width = Inches(0.89)
 
     vheaders = ["Run Status", "LUTs", "FFs", "BRAM", "URAM", "DSP"]
     for c_i, vh in enumerate(vheaders):
@@ -626,20 +576,20 @@ def build_deck():
         p = cell.text_frame.paragraphs[0]
         p.text = vh
         p.alignment = PP_ALIGN.CENTER
-        p.font.name = "Segoe UI"
+        p.font.name = FONT_MAIN
         p.font.size = Pt(8)
         p.font.bold = True
-        p.font.color.rgb = C_TITLE_NAVY
+        p.font.color.rgb = C_NAVY_HEADING
 
     vvals = ["Complete!", "5,565", "1,287", "0", "0", "0"]
     for c_i, vv in enumerate(vvals):
         cell = vtbl.cell(1, c_i)
         cell.fill.solid()
-        cell.fill.fore_color.rgb = RGBColor(255, 255, 255)
+        cell.fill.fore_color.rgb = C_WHITE
         p = cell.text_frame.paragraphs[0]
         p.text = vv
         p.alignment = PP_ALIGN.CENTER
-        p.font.name = "Segoe UI"
+        p.font.name = FONT_MAIN
         p.font.size = Pt(8.5)
         p.font.bold = True
         if c_i == 0:
@@ -649,43 +599,42 @@ def build_deck():
         else:
             p.font.color.rgb = C_TEXT_MUTED
 
-    # Synthesis Key Notes
-    sntb = s3.shapes.add_textbox(left_x + Inches(0.18), sbox_y + Inches(1.20), left_w - Inches(0.36), Inches(0.9))
+    sntb = s3.shapes.add_textbox(left_x + Inches(0.18), sbox_y + Inches(1.18), left_w - Inches(0.36), Inches(1.05))
     sntf = sntb.text_frame
     sntf.word_wrap = True
     sntf.margin_top = sntf.margin_bottom = sntf.margin_left = sntf.margin_right = 0
-    snp = sntf.paragraphs[0]
-    snp.text = "• Full Synthesizability: Top-level MIPS32 core with inserted scan chains and LBIST controller successfully synthesized in Vivado (synth_1 complete)."
-    snp.font.name = "Segoe UI"
-    snp.font.size = Pt(8)
-    snp.font.color.rgb = C_TEXT_DARK
-    
+    snp1 = sntf.paragraphs[0]
+    snp1.text = "• Top-Level Synthesizability: Fully synthesized MIPS32 processor with inserted scan chains and LBIST controller in Vivado (synth_1 complete)."
+    snp1.font.name = FONT_MAIN
+    snp1.font.size = Pt(8)
+    snp1.font.color.rgb = C_TEXT_DARK
+
     snp2 = sntf.add_paragraph()
-    snp2.text = "• Zero DSP/BRAM Overhead: Implemented purely with standard logic cells (5,565 LUTs, 1,287 FFs), preserving all dedicated memory/DSP blocks for application use."
-    snp2.font.name = "Segoe UI"
+    snp2.text = "• Logic Resource Overhead: Pure standard cell / slice implementation (5,565 LUTs, 1,287 FFs); zero dedicated BRAM or DSP blocks consumed."
+    snp2.font.name = FONT_MAIN
     snp2.font.size = Pt(8)
     snp2.font.color.rgb = C_TEXT_DARK
     snp2.space_before = Pt(3)
 
-    # RIGHT COLUMN: Power Reduction Graph & Conclusions
+    # RIGHT SECTION: Key Observations, Fault Coverage Status & Conclusion
     right_x = Inches(6.833)
     right_w = Inches(5.7)
 
-    # 1. Total On-Chip Power Savings Graph
-    chart_y = Inches(1.48)
-    chart_h = Inches(2.70)
+    # 1. Total On-Chip Power Reduction Graph (Top)
+    chart_y = Inches(1.45)
+    chart_h = Inches(2.65)
     chart_path = "Analysis/slide3_compact_chart.png"
     if not os.path.exists(chart_path):
         chart_path = "Analysis/slide3_light_chart.png"
     if os.path.exists(chart_path):
         s3.shapes.add_picture(chart_path, right_x, chart_y, width=right_w, height=chart_h)
 
-    # 2. Key Conclusions & Future Work Container
-    cbox_y = Inches(4.28)
-    cbox_h = Inches(2.67)
+    # 2. Key Observations & Conclusion Container (Bottom)
+    cbox_y = Inches(4.20)
+    cbox_h = Inches(2.93)
     cbox = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, right_x, cbox_y, right_w, cbox_h)
     cbox.fill.solid()
-    cbox.fill.fore_color.rgb = C_CARD_BG
+    cbox.fill.fore_color.rgb = C_WHITE
     cbox.line.color.rgb = C_GREEN
     cbox.line.width = Pt(1.5)
 
@@ -695,18 +644,18 @@ def build_deck():
     ctf.margin_top = ctf.margin_bottom = ctf.margin_left = ctf.margin_right = 0
 
     cp = ctf.paragraphs[0]
-    cp.text = "KEY CONCLUSIONS & FUTURE ROADMAP"
-    cp.font.name = "Segoe UI"
-    cp.font.size = Pt(10.5)
+    cp.text = "KEY OBSERVATIONS, TEST EFFECTIVENESS & FUTURE WORK"
+    cp.font.name = FONT_MAIN
+    cp.font.size = Pt(10)
     cp.font.bold = True
     cp.font.color.rgb = C_GREEN
 
     concl_points = [
-        ("84.35% Total On-Chip Power Reduction", "Successfully mitigated scan-shift overheating and false delay faults by slashing on-chip switching from 55.37% to 8.67%."),
-        ("Starvation-Free Pattern Diversity", "Modulo-16 rotating token ring ensures cyclic toggling across all scan cells, preserving fault detection capability."),
-        ("Zero Test-Time Penalty", "Continuous single-cycle pattern throughput generates valid test stimuli every clock with 0 latency penalty."),
-        ("Production-Grade RTL Complete", "Fully synthesizable VHDL-2008 architecture verified in Vivado (5,565 LUTs, 1,287 FFs, zero inferred latches)."),
-        ("Future Scope: Implementation Closure", "Perform pin-constrained Place & Route (impl_1 closure) and closed-loop stuck-at/transition fault simulation via MISR.")
+        ("Switching Activity & Power Control", "Pattern modifier tightly tracks target limits (10.29% measured vs 10.00% target). Slashes total on-chip scan-shift power by up to 84.35%, eliminating thermal hotspots and preventing false IR-drop delay faults."),
+        ("MIPS32 Core & Scan Architecture Role", "Provides full controllability and observability of internal pipeline registers. Dual-mode scan multiplexers enable seamless shift ingestion and full-speed single-clock functional capture."),
+        ("MISR Compaction & Test Effectiveness", "Continuous single-cycle pattern throughput (0 delay overhead) avoids test-time inflation. The 16-bit MISR compacts responses into a golden signature for rapid GO/NO-GO classification."),
+        ("Fault Coverage Evaluation Status", "Single stuck-at fault injection mechanism architecturally implemented. Comprehensive multi-pattern fault coverage grading is scheduled for joint multi-module integration [Pending Full System Integration]."),
+        ("Future Scope & Next Milestones", "1) Perform closed-loop stuck-at and transition fault simulation; 2) Resolve I/O pin constraints for place-and-route (impl_1 closure); 3) Post-layout timing & physical power characterization on Xilinx Artix-7.")
     ]
 
     for c_title, c_desc in concl_points:
@@ -714,21 +663,21 @@ def build_deck():
         p.space_before = Pt(4)
         r1 = p.add_run()
         r1.text = "✔ " + c_title + ": "
-        r1.font.name = "Segoe UI"
-        r1.font.size = Pt(8.5)
+        r1.font.name = FONT_MAIN
+        r1.font.size = Pt(8.2)
         r1.font.bold = True
-        r1.font.color.rgb = C_TITLE_NAVY
+        r1.font.color.rgb = C_NAVY_HEADING
 
         r2 = p.add_run()
         r2.text = c_desc
-        r2.font.name = "Segoe UI"
-        r2.font.size = Pt(8)
+        r2.font.name = FONT_MAIN
+        r2.font.size = Pt(7.8)
         r2.font.color.rgb = C_TEXT_DARK
 
-    # Save Presentation
+    # Save presentation
     output_filename = "VL405_LBIST_Project_Presentation.pptx"
     prs.save(output_filename)
-    print(f"[SUCCESS] 3-Slide Presentation saved successfully to: {output_filename}")
+    print(f"[SUCCESS] Academic 3-Slide Presentation compiled to: {output_filename}")
 
 if __name__ == "__main__":
-    build_deck()
+    build_presentation()
