@@ -353,7 +353,6 @@ def build_slide():
 
     syn_bullets = [
         "Unified integration: MIPS32 core, four scan chains, 16-bit PRPG modifier, LBIST controller and MISR.",
-        "Synthesized for AMD Artix-7 device xc7a35tcsg324-1.",
         "Activity-driven dynamic-power estimate: 83 milliwatts in Bypass mode → 59 milliwatts at the 10% target (28.9% reduction).",
         "Single synchronous 50 megahertz clock domain with active-low reset."
     ]
@@ -361,11 +360,11 @@ def build_slide():
     for i, btext in enumerate(syn_bullets):
         p = sntf.add_paragraph()
         if i > 0:
-            p.space_before = Pt(3.5)
+            p.space_before = Pt(5.5)
         r = p.add_run()
         r.text = "• " + btext
         r.font.name = FONT_MAIN
-        r.font.size = Pt(7.3)
+        r.font.size = Pt(7.4)
         r.font.color.rgb = C_TEXT_DARK
 
     # =========================================================================
