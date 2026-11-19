@@ -216,7 +216,7 @@ def build_presentation():
         r2.font.size = Pt(8.8)
         r2.font.color.rgb = C_TEXT_DARK
 
-    # PROPOSED APPROACH & OBJECTIVES (Right Card)
+    # PROPOSED APPROACH & OBJECTIVES (Right Card - Unified Across All 3 Pillars)
     prop_x = start_x + prob_w + Inches(0.24)
     prop_w = intro_w - prob_w - Inches(0.24)
 
@@ -228,64 +228,80 @@ def build_presentation():
 
     add_pill_badge(s1, prop_x + Inches(0.18), sec_y + Inches(0.14), Inches(3.2), Inches(0.34), "PROPOSED APPROACH & OBJECTIVES", C_PILL_GREEN)
 
-    # Core concept inner box
-    concept_y = sec_y + Inches(0.56)
-    concept_h = Inches(0.68)
+    # Core Concept Summary Box (Unified Solution)
+    concept_y = sec_y + Inches(0.54)
+    concept_h = Inches(0.56)
     c_inner = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, prop_x + Inches(0.18), concept_y, prop_w - Inches(0.36), concept_h)
     c_inner.fill.solid()
     c_inner.fill.fore_color.rgb = C_WHITE
     c_inner.line.color.rgb = RGBColor(209, 250, 229)
     c_inner.line.width = Pt(1)
 
-    ctb = s1.shapes.add_textbox(prop_x + Inches(0.30), concept_y + Inches(0.12), prop_w - Inches(0.60), concept_h - Inches(0.24))
+    ctb = s1.shapes.add_textbox(prop_x + Inches(0.26), concept_y + Inches(0.08), prop_w - Inches(0.52), concept_h - Inches(0.16))
     ctf = ctb.text_frame
     ctf.word_wrap = True
     ctf.margin_top = ctf.margin_bottom = ctf.margin_left = ctf.margin_right = 0
     cp = ctf.paragraphs[0]
-    cp.text = "Programmable toggle-rate control modifies PRPG-generated patterns to reduce unnecessary scan-shift transitions."
+    cp.text = "Unified Strategy: Integrate activity-throttled LFSR pattern generation with balanced MIPS32 scan chains and autonomous MISR response compaction for complete on-chip self-test."
     cp.font.name = FONT_MAIN
-    cp.font.size = Pt(9.5)
+    cp.font.size = Pt(8.6)
     cp.font.bold = True
     cp.font.color.rgb = C_NAVY_HEADING
 
-    # 4 Numbered Objectives
-    objs = [
-        "Generate pseudorandom patterns using an LFSR-based PRPG.",
-        "Control switching activity with a programmable pattern modifier.",
-        "Apply modified patterns to the MIPS32 scan chains.",
-        "Evaluate toggle rate, scan activity, power and test effectiveness."
+    # 4 Comprehensive Objectives Across All 3 Pillars + Evaluation
+    pillars = [
+        ("MIPS32 Core & Balanced Scan Architecture:",
+         " Partition 1,024 processor state registers into 4 balanced scan chains (256 cells each) to maximize test controllability and observability while minimizing shift latency.",
+         C_BLUE),
+        ("PRPG & Programmable Toggle-Rate Control:",
+         " Implement a 16-bit LFSR PRPG with DDRTS pattern modification to dynamically regulate scan-shift transitions (10%–60% targets), eliminating IR-drop and thermal stress.",
+         C_PILL_GREEN),
+        ("Autonomous LBIST Controller & MISR Compactor:",
+         " Coordinate 4-phase test execution (Reset → Shift → Capture → Compact) via an on-chip FSM, compacting responses into a 16-bit MISR signature for autonomous PASS/FAIL evaluation.",
+         C_PILL_ORANGE),
+        ("Full-System Verification & Power Closure:",
+         " Evaluate scan toggle activity, verify 100% stuck-at fault coverage (2,048 faults), and achieve complete FPGA synthesis closure on AMD Xilinx Artix-7.",
+         C_PILL_PURPLE)
     ]
 
-    obj_start_y = concept_y + concept_h + Inches(0.14)
-    obj_gap = Inches(0.55)
+    obj_start_y = concept_y + concept_h + Inches(0.12)
+    obj_gap = Inches(0.70)
 
-    for i, obj_txt in enumerate(objs):
+    for i, (hd, body, col) in enumerate(pillars):
         oy = obj_start_y + i * obj_gap
 
-        # Number badge
-        nb = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, prop_x + Inches(0.22), oy, Inches(0.34), Inches(0.34))
+        # Number Badge
+        nb = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, prop_x + Inches(0.20), oy, Inches(0.32), Inches(0.32))
         nb.fill.solid()
         nb.fill.fore_color.rgb = C_WHITE
-        nb.line.color.rgb = RGBColor(167, 243, 208)
-        nb.line.width = Pt(1)
+        nb.line.color.rgb = col
+        nb.line.width = Pt(1.5)
         np_ = nb.text_frame.paragraphs[0]
         np_.text = str(i + 1)
         np_.alignment = PP_ALIGN.CENTER
         np_.font.name = FONT_MAIN
         np_.font.size = Pt(9.5)
         np_.font.bold = True
-        np_.font.color.rgb = C_PILL_GREEN
+        np_.font.color.rgb = col
 
-        # Text
-        otb = s1.shapes.add_textbox(prop_x + Inches(0.68), oy - Inches(0.02), prop_w - Inches(0.90), Inches(0.38))
+        # Text Box
+        otb = s1.shapes.add_textbox(prop_x + Inches(0.62), oy - Inches(0.04), prop_w - Inches(0.80), Inches(0.64))
         otf = otb.text_frame
         otf.word_wrap = True
         otf.margin_top = otf.margin_bottom = otf.margin_left = otf.margin_right = 0
-        op = otf.paragraphs[0]
-        op.text = obj_txt
-        op.font.name = FONT_MAIN
-        op.font.size = Pt(9.2)
-        op.font.color.rgb = C_TEXT_DARK
+        p = otf.paragraphs[0]
+        r1 = p.add_run()
+        r1.text = hd
+        r1.font.name = FONT_MAIN
+        r1.font.size = Pt(8.5)
+        r1.font.bold = True
+        r1.font.color.rgb = col
+
+        r2 = p.add_run()
+        r2.text = body
+        r2.font.name = FONT_MAIN
+        r2.font.size = Pt(7.8)
+        r2.font.color.rgb = C_TEXT_DARK
 
     # =========================================================================
     # SLIDE 2: PROPOSED ARCHITECTURE AND METHODOLOGY
