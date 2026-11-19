@@ -1007,7 +1007,7 @@ def build_presentation():
     tp1.font.color.rgb = C_NAVY_HEADING
 
     tp2 = ttf.add_paragraph()
-    tp2.text = "VL405 Design for Testability Laboratory Project  •  Department of Electronics & Communication Engineering"
+    tp2.text = "VL405 Design for Testability Laboratory Project"
     tp2.alignment = PP_ALIGN.CENTER
     tp2.font.name = FONT_MAIN
     tp2.font.size = Pt(8.2)
