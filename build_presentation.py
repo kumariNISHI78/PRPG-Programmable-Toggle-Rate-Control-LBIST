@@ -975,7 +975,7 @@ def build_presentation():
     ap.font.color.rgb = C_PILL_ORANGE
 
     # Sub-footnote below cards
-    foot_tb = s3.shapes.add_textbox(left_m, Inches(6.52), Inches(11.733), Inches(0.18))
+    foot_tb = s3.shapes.add_textbox(left_m, Inches(6.50), Inches(11.733), Inches(0.18))
     foot_tf = foot_tb.text_frame
     foot_tf.margin_top = foot_tf.margin_bottom = foot_tf.margin_left = foot_tf.margin_right = 0
     fp_ = foot_tf.paragraphs[0]
@@ -985,9 +985,9 @@ def build_presentation():
     fp_.font.size = Pt(6.5)
     fp_.font.color.rgb = C_TEXT_MUTED
 
-    # Bottom Banner
-    thx_y = Inches(6.74)
-    thx_h = Inches(0.48)
+    # Bottom Banner (with VL405 project subtitle)
+    thx_y = Inches(6.70)
+    thx_h = Inches(0.56)
     thx_w = Inches(11.733)
     thx_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_m, thx_y, thx_w, thx_h)
     thx_box.fill.solid()
@@ -995,16 +995,25 @@ def build_presentation():
     thx_box.line.color.rgb = C_BLUE
     thx_box.line.width = Pt(1.5)
 
-    ttb = s3.shapes.add_textbox(left_m + Inches(0.1), thx_y + Inches(0.12), thx_w - Inches(0.2), thx_h - Inches(0.24))
+    ttb = s3.shapes.add_textbox(left_m + Inches(0.1), thx_y + Inches(0.06), thx_w - Inches(0.2), thx_h - Inches(0.12))
     ttf = ttb.text_frame
     ttf.margin_top = ttf.margin_bottom = ttf.margin_left = ttf.margin_right = 0
     tp1 = ttf.paragraphs[0]
-    tp1.text = "THANK YOU  •  QUESTIONS & DISCUSSION WELCOME"
+    tp1.text = "Thank You! Questions & Discussion Welcome"
     tp1.alignment = PP_ALIGN.CENTER
     tp1.font.name = FONT_MAIN
-    tp1.font.size = Pt(10)
+    tp1.font.size = Pt(10.5)
     tp1.font.bold = True
     tp1.font.color.rgb = C_NAVY_HEADING
+
+    tp2 = ttf.add_paragraph()
+    tp2.text = "VL405 Design for Testability Laboratory Project  •  Department of Electronics & Communication Engineering"
+    tp2.alignment = PP_ALIGN.CENTER
+    tp2.font.name = FONT_MAIN
+    tp2.font.size = Pt(8.2)
+    tp2.font.bold = True
+    tp2.font.color.rgb = C_NAVY_SUB
+    tp2.space_before = Pt(2)
 
     # Save presentation
     output_filename = "VL405_LBIST_Project_Presentation.pptx"
