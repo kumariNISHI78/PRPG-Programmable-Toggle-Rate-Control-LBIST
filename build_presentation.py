@@ -179,42 +179,95 @@ def build_presentation():
     sec_y = Inches(3.06)
     sec_h = Inches(4.18)
 
-    # PROBLEM STATEMENT (Left Card)
-    prob_w = Inches(4.30)
+    # =========================================================================
+    # BOTTOM TWO BALANCED SECTIONS: PROBLEM STATEMENT & PROPOSED APPROACH
+    # =========================================================================
+    sec_y = Inches(3.06)
+    sec_h = Inches(4.18)
+
+    # PROBLEM STATEMENT (Left Card - Fully Informative 4-Pillar Breakdown)
+    prob_w = Inches(4.60)
     pbox = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, start_x, sec_y, prob_w, sec_h)
     pbox.fill.solid()
     pbox.fill.fore_color.rgb = RGBColor(255, 245, 245)
     pbox.line.color.rgb = RGBColor(254, 202, 202)
     pbox.line.width = Pt(1.5)
 
-    add_pill_badge(s1, start_x + Inches(0.18), sec_y + Inches(0.14), Inches(2.1), Inches(0.34), "PROBLEM STATEMENT", C_PILL_RED)
+    add_pill_badge(s1, start_x + Inches(0.18), sec_y + Inches(0.14), Inches(2.2), Inches(0.34), "PROBLEM STATEMENT", C_PILL_RED)
 
-    ptb = s1.shapes.add_textbox(start_x + Inches(0.22), sec_y + Inches(0.58), prob_w - Inches(0.44), sec_h - Inches(0.70))
-    ptf = ptb.text_frame
-    ptf.word_wrap = True
-    ptf.margin_top = ptf.margin_bottom = ptf.margin_left = ptf.margin_right = 0
+    # Problem Statement Callout / Summary Box
+    p_concept_y = sec_y + Inches(0.54)
+    p_concept_h = Inches(0.56)
+    p_inner = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, start_x + Inches(0.18), p_concept_y, prob_w - Inches(0.36), p_concept_h)
+    p_inner.fill.solid()
+    p_inner.fill.fore_color.rgb = C_WHITE
+    p_inner.line.color.rgb = RGBColor(254, 202, 202)
+    p_inner.line.width = Pt(1)
 
-    prob_items = [
-        ("High switching activity:", " Conventional LFSR patterns can produce frequent transitions during scan shifting."),
-        ("Power impact:", " High scan-shift activity increases dynamic power and may cause IR-drop and delay variation."),
-        ("Thermal stress:", " Excessive test activity can create local heating and false test failures.")
+    ptb_top = s1.shapes.add_textbox(start_x + Inches(0.24), p_concept_y + Inches(0.08), prob_w - Inches(0.48), p_concept_h - Inches(0.16))
+    ptf_top = ptb_top.text_frame
+    ptf_top.word_wrap = True
+    ptf_top.margin_top = ptf_top.margin_bottom = ptf_top.margin_left = ptf_top.margin_right = 0
+    pp_top = ptf_top.paragraphs[0]
+    pp_top.text = "Core Challenge: Test-mode switching activity is 3×–5× higher than normal operation, causing severe IR-drop, supply noise, and false-positive failures."
+    pp_top.font.name = FONT_MAIN
+    pp_top.font.size = Pt(8.2)
+    pp_top.font.bold = True
+    pp_top.font.color.rgb = RGBColor(153, 27, 27)
+
+    # 4 Comprehensive Problem Items
+    prob_pillars = [
+        ("Uncontrolled LFSR Shift Toggling:",
+         " Standard pseudorandom LFSR patterns have a ~50% transition probability, toggling thousands of scan cells simultaneously each shift clock.",
+         C_PILL_RED),
+        ("Power Grid IR-Drop & Delay Faults:",
+         " Massive instantaneous current draw (di/dt) causes supply rail collapse and ground bounce, inducing false timing violations and yield loss.",
+         C_PILL_RED),
+        ("Localized Thermal Hotspots:",
+         " Continuous high-frequency scan shifting produces severe power dissipation, risking permanent silicon damage during wafer-level probe testing.",
+         C_PILL_RED),
+        ("MIPS32 Processor Test Complexity:",
+         " Testing 1,024 tightly coupled architectural registers requires high fault coverage without exceeding chip-level power and thermal limits.",
+         C_PILL_RED)
     ]
 
-    for i, (hd, body) in enumerate(prob_items):
-        p = ptf.add_paragraph()
-        if i > 0:
-            p.space_before = Pt(8)
+    prob_start_y = p_concept_y + p_concept_h + Inches(0.12)
+    prob_gap = Inches(0.70)
+
+    for i, (hd, body, col) in enumerate(prob_pillars):
+        py = prob_start_y + i * prob_gap
+
+        # Number Badge
+        pb = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, start_x + Inches(0.18), py, Inches(0.30), Inches(0.30))
+        pb.fill.solid()
+        pb.fill.fore_color.rgb = C_WHITE
+        pb.line.color.rgb = col
+        pb.line.width = Pt(1.5)
+        pbp = pb.text_frame.paragraphs[0]
+        pbp.text = str(i + 1)
+        pbp.alignment = PP_ALIGN.CENTER
+        pbp.font.name = FONT_MAIN
+        pbp.font.size = Pt(9.0)
+        pbp.font.bold = True
+        pbp.font.color.rgb = col
+
+        # Text Box
+        ptb = s1.shapes.add_textbox(start_x + Inches(0.56), py - Inches(0.02), prob_w - Inches(0.72), Inches(0.66))
+        ptf = ptb.text_frame
+        ptf.word_wrap = True
+        ptf.margin_top = ptf.margin_bottom = ptf.margin_left = ptf.margin_right = 0
+        p = ptf.paragraphs[0]
         r1 = p.add_run()
         r1.text = hd
         r1.font.name = FONT_MAIN
-        r1.font.size = Pt(9.5)
+        r1.font.size = Pt(7.6)
         r1.font.bold = True
-        r1.font.color.rgb = C_PILL_RED
+        r1.font.color.rgb = col
 
         r2 = p.add_run()
         r2.text = body
         r2.font.name = FONT_MAIN
-        r2.font.size = Pt(8.8)
+        r2.font.size = Pt(7.1)
         r2.font.color.rgb = C_TEXT_DARK
 
     # PROPOSED APPROACH & OBJECTIVES (Right Card - Unified Across All 3 Pillars)
