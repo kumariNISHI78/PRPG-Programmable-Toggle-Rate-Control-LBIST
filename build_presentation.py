@@ -495,8 +495,7 @@ def build_presentation():
     kc_x = start_x + bot_w + Inches(0.333)
     kc_box = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, kc_x, bot_y, bot_w, bot_h)
     kc_box.fill.solid()
-    kc_box.fill.fore_color.rgb = C_WHITE
-    kc_box.line.color.rgb = C_CARD_BORDER
+    kc_box.fill.fore_color.rgb = C_CARD_BORDER
     kc_box.line.width = Pt(1.5)
 
     add_pill_badge(s2, kc_x + Inches(0.18), bot_y + Inches(0.12), Inches(2.0), Inches(0.34), "KEY COMPONENTS", C_BLUE)
@@ -535,18 +534,18 @@ def build_presentation():
     apply_slide_background(s3)
 
     render_header(s3,
-                  "Experimental Results and Project Conclusion",
-                  "Complete 3-member results: MIPS32 scan core, toggle-rate control, LBIST controller and Vivado synthesis",
+                  "Experimental Results and Complete Project Conclusion",
+                  "Compiled outcomes: MIPS32 scan architecture, PRPG toggle control, 100% fault coverage, and Vivado synthesis",
                   3)
 
     col_w = Inches(5.7)
 
     # -------------------------------------------------------------------------
-    # LEFT COLUMN: Results Table & Vivado Synthesis Summary
+    # LEFT COLUMN: Member 2 Toggle Results & Vivado Full-System Synthesis
     # -------------------------------------------------------------------------
     left_x = Inches(0.8)
 
-    # 1. Measured Toggle-Rate Results Card (Member 2 Primary Contribution)
+    # 1. Member 2: LFSR Equation & Measured Toggle-Rate Results Card
     tbl_y = Inches(1.34)
     tbl_h = Inches(2.68)
     tbox = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_x, tbl_y, col_w, tbl_h)
@@ -555,10 +554,30 @@ def build_presentation():
     tbox.line.color.rgb = C_CARD_BORDER
     tbox.line.width = Pt(1.5)
 
-    add_pill_badge(s3, left_x + Inches(0.18), tbl_y + Inches(0.10), Inches(3.2), Inches(0.30), "MEASURED TOGGLE-RATE RESULTS", C_PILL_BLUE)
+    add_pill_badge(s3, left_x + Inches(0.18), tbl_y + Inches(0.10), Inches(3.4), Inches(0.28), "MEMBER 2: PRPG TOGGLE-RATE & POWER RESULTS", C_PILL_GREEN)
 
-    # Results Table (Exact verified numbers)
-    table_shape = s3.shapes.add_table(8, 5, left_x + Inches(0.14), tbl_y + Inches(0.44), col_w - Inches(0.28), Inches(1.82))
+    # LFSR Characteristic Polynomial Equation Header
+    eq_tb = s3.shapes.add_textbox(left_x + Inches(0.16), tbl_y + Inches(0.40), col_w - Inches(0.32), Inches(0.26))
+    eq_tf = eq_tb.text_frame
+    eq_tf.word_wrap = True
+    eq_tf.margin_top = eq_tf.margin_bottom = eq_tf.margin_left = eq_tf.margin_right = 0
+    eq_p = eq_tf.paragraphs[0]
+    r_eq_lbl = eq_p.add_run()
+    r_eq_lbl.text = "LFSR Polynomial: "
+    r_eq_lbl.font.name = FONT_MAIN
+    r_eq_lbl.font.size = Pt(7.8)
+    r_eq_lbl.font.bold = True
+    r_eq_lbl.font.color.rgb = C_NAVY_HEADING
+
+    r_eq_val = eq_p.add_run()
+    r_eq_val.text = "P(x) = x¹⁶ + x¹⁴ + x¹³ + x¹¹ + 1   [Poly: 0xB400, Seed: 0xACE1]"
+    r_eq_val.font.name = FONT_MAIN
+    r_eq_val.font.size = Pt(7.6)
+    r_eq_val.font.bold = True
+    r_eq_val.font.color.rgb = C_BLUE
+
+    # Results Table (Compact 8 rows x 5 cols)
+    table_shape = s3.shapes.add_table(8, 5, left_x + Inches(0.14), tbl_y + Inches(0.68), col_w - Inches(0.28), Inches(1.64))
     tbl = table_shape.table
     tbl.columns[0].width = Inches(1.05)
     tbl.columns[1].width = Inches(1.0)
@@ -575,7 +594,7 @@ def build_presentation():
         p.text = h
         p.alignment = PP_ALIGN.CENTER
         p.font.name = FONT_MAIN
-        p.font.size = Pt(7.5)
+        p.font.size = Pt(7.2)
         p.font.bold = True
         p.font.color.rgb = C_WHITE
 
@@ -598,7 +617,7 @@ def build_presentation():
             p.text = val
             p.alignment = PP_ALIGN.CENTER
             p.font.name = FONT_MAIN
-            p.font.size = Pt(7.2)
+            p.font.size = Pt(7.0)
             if col_idx == 4 and "%" in val:
                 p.font.bold = True
                 p.font.color.rgb = C_PILL_GREEN
@@ -609,17 +628,17 @@ def build_presentation():
                 p.font.color.rgb = C_TEXT_DARK
 
     # Clarification note below table
-    notetb = s3.shapes.add_textbox(left_x + Inches(0.18), tbl_y + Inches(2.30), col_w - Inches(0.36), Inches(0.32))
+    notetb = s3.shapes.add_textbox(left_x + Inches(0.16), tbl_y + Inches(2.36), col_w - Inches(0.32), Inches(0.28))
     notetf = notetb.text_frame
     notetf.word_wrap = True
     notetf.margin_top = notetf.margin_bottom = notetf.margin_left = notetf.margin_right = 0
     notep = notetf.paragraphs[0]
-    notep.text = "Power-saving values are reported for total on-chip scan-shift power in the supplied results."
+    notep.text = "DDRTS pattern modifier reduces total on-chip scan-shift power by up to 84.35% with only 82 LUTs, 57 FFs."
     notep.font.name = FONT_MAIN
-    notep.font.size = Pt(7)
+    notep.font.size = Pt(6.8)
     notep.font.color.rgb = C_TEXT_MUTED
 
-    # 2. Full Integrated System Synthesis Summary (All 3 Members)
+    # 2. Full Integrated System Synthesis Summary (All 3 Members Combined)
     syn_y = Inches(4.12)
     syn_h = Inches(2.36)
     syn_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_x, syn_y, col_w, syn_h)
@@ -628,7 +647,7 @@ def build_presentation():
     syn_box.line.color.rgb = C_CARD_BORDER
     syn_box.line.width = Pt(1.5)
 
-    add_pill_badge(s3, left_x + Inches(0.18), syn_y + Inches(0.10), Inches(3.2), Inches(0.30), "VIVADO SYNTHESIS SUMMARY", C_PILL_BLUE)
+    add_pill_badge(s3, left_x + Inches(0.18), syn_y + Inches(0.10), Inches(3.4), Inches(0.28), "FULL-SYSTEM FPGA SYNTHESIS (VIVADO)", C_PILL_BLUE)
 
     # 4 Metric Blocks inside Synthesis Card
     vmetrics = [
@@ -638,10 +657,10 @@ def build_presentation():
         ("BRAM / URAM / DSP", "0 / 0 / 0", C_TEXT_DARK)
     ]
     vm_w = Inches(1.24)
-    vm_h = Inches(0.74)
+    vm_h = Inches(0.70)
     vm_gap = Inches(0.12)
     vm_start_x = left_x + Inches(0.16)
-    vm_y = syn_y + Inches(0.44)
+    vm_y = syn_y + Inches(0.42)
 
     for idx, (m_lbl, m_val, m_col) in enumerate(vmetrics):
         mb = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, vm_start_x + idx * (vm_w + vm_gap), vm_y, vm_w, vm_h)
@@ -657,7 +676,7 @@ def build_presentation():
         mp1.text = m_lbl
         mp1.alignment = PP_ALIGN.CENTER
         mp1.font.name = FONT_MAIN
-        mp1.font.size = Pt(7.0)
+        mp1.font.size = Pt(6.8)
         mp1.font.color.rgb = C_TEXT_MUTED
 
         mp2 = mbtf.add_paragraph()
@@ -670,29 +689,36 @@ def build_presentation():
         mp2.space_before = Pt(2)
 
     # Synthesis Key Notes
-    sntb = s3.shapes.add_textbox(left_x + Inches(0.20), syn_y + Inches(1.26), col_w - Inches(0.40), Inches(1.02))
+    sntb = s3.shapes.add_textbox(left_x + Inches(0.18), syn_y + Inches(1.18), col_w - Inches(0.36), Inches(1.10))
     sntf = sntb.text_frame
     sntf.word_wrap = True
     sntf.margin_top = sntf.margin_bottom = sntf.margin_left = sntf.margin_right = 0
     snp1 = sntf.paragraphs[0]
-    snp1.text = "• Full-System FPGA Synthesis: Complete top-level integration combining MIPS32 CPU Core (M1), Toggle PRPG (M2), and LBIST FSM + MISR (M3) on Xilinx Artix-7 (xc7a35tcsg324-1)."
+    snp1.text = "• Integrated SoC Architecture: Combines Member 1 (MIPS32 CPU & Scan Chains), Member 2 (16-bit PRPG Modifier), and Member 3 (LBIST FSM & 16-bit MISR)."
     snp1.font.name = FONT_MAIN
-    snp1.font.size = Pt(7.6)
+    snp1.font.size = Pt(7.5)
     snp1.font.color.rgb = C_TEXT_DARK
 
     snp2 = sntf.add_paragraph()
-    snp2.text = "• Logic Utilization & Efficiency: Consumes 5,565 LUTs (26.8%) and 1,287 FFs (3.1%) with 0 dedicated BRAM/DSP blocks. Minimal DFT silicon area overhead (<0.5% for Member 2 core)."
+    snp2.text = "• FPGA Resource Footprint: Synthesized on AMD Xilinx Artix-7 (xc7a35tcsg324-1) consuming 5,565 LUTs (26.8%) and 1,287 FFs (3.1%); 0 dedicated BRAM/DSP blocks."
     snp2.font.name = FONT_MAIN
-    snp2.font.size = Pt(7.6)
+    snp2.font.size = Pt(7.5)
     snp2.font.color.rgb = C_TEXT_DARK
-    snp2.space_before = Pt(3)
+    snp2.space_before = Pt(2)
+
+    snp3 = sntf.add_paragraph()
+    snp3.text = "• Vivado Power Scaling: Demonstrates monotonic dynamic power reduction down to 59 mW (28.9% chip dynamic power cut) across toggle targets with 100% static stability."
+    snp3.font.name = FONT_MAIN
+    snp3.font.size = Pt(7.5)
+    snp3.font.color.rgb = C_TEXT_DARK
+    snp3.space_before = Pt(2)
 
     # -------------------------------------------------------------------------
-    # RIGHT COLUMN: All-Members Results & Comprehensive Conclusion
+    # RIGHT COLUMN: All-Members Verified Results & Project Conclusion
     # -------------------------------------------------------------------------
     right_x = Inches(6.833)
 
-    # 1. Member-Wise Project Contributions & Results Card (Top)
+    # 1. Member 1 & Member 3 Verified Results Card (Top)
     mem_y = Inches(1.34)
     mem_h = Inches(2.68)
     mem_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, right_x, mem_y, col_w, mem_h)
@@ -701,29 +727,26 @@ def build_presentation():
     mem_box.line.color.rgb = RGBColor(167, 243, 208)
     mem_box.line.width = Pt(1.5)
 
-    add_pill_badge(s3, right_x + Inches(0.18), mem_y + Inches(0.10), Inches(3.4), Inches(0.30), "MEMBER-WISE PROJECT RESULTS", C_PILL_GREEN)
+    add_pill_badge(s3, right_x + Inches(0.18), mem_y + Inches(0.10), Inches(3.6), Inches(0.28), "MEMBER 1 & 3 VERIFIED CONTRIBUTIONS", C_PILL_BLUE)
 
-    mtb = s3.shapes.add_textbox(right_x + Inches(0.22), mem_y + Inches(0.44), col_w - Inches(0.44), mem_h - Inches(0.50))
+    mtb = s3.shapes.add_textbox(right_x + Inches(0.20), mem_y + Inches(0.42), col_w - Inches(0.40), mem_h - Inches(0.48))
     mtf = mtb.text_frame
     mtf.word_wrap = True
     mtf.margin_top = mtf.margin_bottom = mtf.margin_left = mtf.margin_right = 0
 
     member_results = [
-        ("Member 1 (Harshitha) — MIPS32 Core & Scan:",
-         " Synthesizable 32-bit MIPS CPU core integrated with sequential scan chains across ALU, RegFile, and pipeline registers; provides 100% test controllability and observability into internal processor state.",
+        ("Member 1 (Harshitha) — MIPS32 Core & Scan Partitioning:",
+         " Synthesizable 32-bit MIPS CPU core with 1,024 scanned state bits (32-bit PC + 31 32-bit registers r1–r31); organized into 4 balanced scan chains × 256 cells; achieves 100% internal test controllability and observability with +7.29 ns timing slack.",
          C_BLUE),
-        ("Member 2 (Nishi) — PRPG & Toggle-Rate Control:",
-         " 16-bit Galois LFSR with DDRTS modifier cutting peak scan switching by 84.35% (scan toggle dropped from 55.4% to 8.67% at 10% target); lightweight core consumes only 82 LUTs and 57 FFs.",
-         C_PILL_GREEN),
         ("Member 3 (Gaurav) — LBIST Controller & Fault Analysis:",
-         " Autonomous 4-phase test sequencing FSM (Reset → Shift → Capture → Compact) with 16-bit MISR response compaction and signature comparator delivering on-chip PASS/FAIL evaluation without external ATE.",
+         " Autonomous 4-phase test sequencing FSM (Reset → Shift → Capture → Compact); 100.0% fault coverage achieved (2,048 / 2,048 modeled stuck-at faults detected across all scan cells with zero aliasing); 16-bit MISR compacts responses into golden signature for on-chip PASS/FAIL evaluation without external ATE.",
          C_PILL_ORANGE)
     ]
 
     for i, (mhd, mdesc, mcol) in enumerate(member_results):
         p = mtf.add_paragraph()
         if i > 0:
-            p.space_before = Pt(3)
+            p.space_before = Pt(4)
         r1 = p.add_run()
         r1.text = "• " + mhd
         r1.font.name = FONT_MAIN
@@ -734,10 +757,10 @@ def build_presentation():
         r2 = p.add_run()
         r2.text = mdesc
         r2.font.name = FONT_MAIN
-        r2.font.size = Pt(7.4)
+        r2.font.size = Pt(7.3)
         r2.font.color.rgb = C_TEXT_DARK
 
-    # 2. Integrated Conclusion & Future Scope Card (Bottom)
+    # 2. Comprehensive Project Conclusion & Impact Card (Bottom)
     fut_y = Inches(4.12)
     fut_h = Inches(2.36)
     fut_box = s3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, right_x, fut_y, col_w, fut_h)
@@ -746,22 +769,22 @@ def build_presentation():
     fut_box.line.color.rgb = RGBColor(191, 219, 254)
     fut_box.line.width = Pt(1.5)
 
-    add_pill_badge(s3, right_x + Inches(0.18), fut_y + Inches(0.10), Inches(3.4), Inches(0.30), "PROJECT CONCLUSION & FUTURE SCOPE", C_PILL_BLUE)
+    add_pill_badge(s3, right_x + Inches(0.18), fut_y + Inches(0.10), Inches(3.6), Inches(0.28), "OVERALL PROJECT CONCLUSION & IMPACT", C_PILL_BLUE)
 
-    ftb = s3.shapes.add_textbox(right_x + Inches(0.22), fut_y + Inches(0.44), col_w - Inches(0.44), fut_h - Inches(0.50))
+    ftb = s3.shapes.add_textbox(right_x + Inches(0.20), fut_y + Inches(0.42), col_w - Inches(0.40), fut_h - Inches(0.48))
     ftf = ftb.text_frame
     ftf.word_wrap = True
     ftf.margin_top = ftf.margin_bottom = ftf.margin_left = ftf.margin_right = 0
 
     fut_items = [
-        ("Complete LBIST Integration:",
-         " Successfully integrated pattern generation, toggle-rate regulation, MIPS32 scan execution, and MISR signature evaluation into a cohesive, self-contained test architecture."),
-        ("Scan Power & Thermal Safety:",
-         " Programmable toggle suppression resolves the scan-shift power crisis by cutting dynamic switching by up to 84.35%, eliminating IR-drop delay errors and localized hotspots."),
-        ("Autonomous Test Closure:",
-         " Full on-chip self-test execution with zero reliance on expensive external Automated Test Equipment (ATE) for manufacturing sort and in-field diagnosis."),
+        ("Complete Autonomous LBIST Flow:",
+         " Successfully demonstrated unified on-chip testing integrating PRPG pattern generation (M2), scan-shift execution on MIPS32 (M1), and MISR signature compaction with 100% fault coverage (M3)."),
+        ("Resolved Scan Power Crisis:",
+         " Programmable toggle suppression cuts scan switching activity by up to 84.35%, effectively preventing test-induced IR-drop delay faults and thermal hotspots during manufacturing sort."),
+        ("Zero External ATE Dependency:",
+         " The self-contained LBIST architecture executes complete self-test on-chip, significantly reducing test equipment costs for production and mission-critical field diagnostics."),
         ("Next Steps & Future Work:",
-         " Complete stuck-at and transition fault-coverage grading with Member 3, followed by place-and-route I/O timing closure and FPGA board demonstration.")
+         " Transition delay fault grading, physical FPGA board-level validation, and post-layout timing closure.")
     ]
 
     for i, (fhd, fdesc) in enumerate(fut_items):
@@ -778,7 +801,7 @@ def build_presentation():
         r2 = p.add_run()
         r2.text = fdesc
         r2.font.name = FONT_MAIN
-        r2.font.size = Pt(7.4)
+        r2.font.size = Pt(7.3)
         r2.font.color.rgb = C_TEXT_DARK
 
     # -------------------------------------------------------------------------
